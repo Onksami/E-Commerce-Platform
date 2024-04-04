@@ -19,7 +19,6 @@ import { bgGradient } from 'src/theme/css';
 
 import Logo from 'src/components/logo';
 import Iconify from 'src/components/iconify';
-import { Navigate } from 'react-router-dom';
 
 // ----------------------------------------------------------------------
 
@@ -30,52 +29,18 @@ export default function LoginView() {
 
   const [showPassword, setShowPassword] = useState(false);
 
-  const [userEmail, setUserEmail] = useState('');
-  const [userPassword, setUserPassword] = useState('');
-
-  const handleClick = async () => {
-    try {
-      // Perform an API request to authenticate the user
-      const response = await fetch('https://express-app-1.up.railway.app/api/v1/users/sign-in', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          email: userEmail,
-          password: userPassword
-        })
-      });
-  
-      if (response.ok) {
-        // If authentication is successful, navigate to the dashboard or product page
-        Navigate('/dashboard');
-      } else {
-        // Handle authentication failure (e.g., show an error message)
-        console.error('Authentication failed');
-      }
-    } catch (error) {
-      console.error('Error occurred during authentication:', error);
-    }
+  const handleClick = () => {
+    router.push('/dashboard');
   };
-
-  const handleCreateAccountClick = () => {
-    // Navigate to the create account page
-    Navigate('/register');
-  };
-
-
-
 
   const renderForm = (
     <>
       <Stack spacing={3}>
-        <TextField name="email" label="Email address" onChange={(e) => setUserEmail(e.target.value)}/>
+        <TextField name="email" label="Email address" />
 
         <TextField
           name="password"
           label="Password"
-          onChange={(e) => setUserPassword(e.target.value)}
           type={showPassword ? 'text' : 'password'}
           InputProps={{
             endAdornment: (
@@ -134,11 +99,11 @@ export default function LoginView() {
             maxWidth: 420,
           }}
         >
-          <Typography variant="h4">Sign in</Typography>
+          <Typography variant="h4">Sign in to Minimal</Typography>
 
           <Typography variant="body2" sx={{ mt: 2, mb: 5 }}>
-            To create an account.
-            <Link variant="subtitle2" sx={{ ml: 0.5 }} onClick={handleCreateAccountClick} >
+            Don’t have an account?
+            <Link variant="subtitle2" sx={{ ml: 0.5 }}>
               Create Account.
             </Link>
           </Typography>

@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
 
 import Box from '@mui/material/Box';
@@ -14,7 +14,7 @@ import { RouterLink } from 'src/routes/components';
 
 import { useResponsive } from 'src/hooks/use-responsive';
 
-import { account } from 'src/_mock/account';
+
 
 import Logo from 'src/components/logo';
 import Scrollbar from 'src/components/scrollbar';
@@ -22,10 +22,41 @@ import Scrollbar from 'src/components/scrollbar';
 import { NAV } from './config-layout';
 import navConfig from './config-navigation';
 
+import { AuthContext } from '../../context/AuthContext';
+
 // ----------------------------------------------------------------------
 
+
+const account = {
+  displayName: 'Test Test.',
+  email: 'test.test@gmail.com',
+  photoURL: '/assets/images/avatars/avatar_25.jpg',
+};
+
+
+
+
 export default function Nav({ openNav, onCloseNav }) {
-  const pathname = usePathname();
+
+  const pathname = usePathname();  
+  
+  const authContext = useContext(AuthContext);
+
+  const session =authContext.session;
+
+  console.log("Navbar Session", session);
+
+  // const displayName = session.firstname
+
+  // const email = session.email
+
+  const photoURL = '/assets/images/avatars/avatar_25.jpg';
+
+
+
+  
+
+
 
   const upLg = useResponsive('up', 'lg');
 
@@ -49,13 +80,13 @@ export default function Nav({ openNav, onCloseNav }) {
         bgcolor: (theme) => alpha(theme.palette.grey[500], 0.12),
       }}
     >
-      <Avatar src={account.photoURL} alt="photoURL" />
+      <Avatar src={photoURL} alt="photoURL" />
 
       <Box sx={{ ml: 2 }}>
-        <Typography variant="subtitle2">{account.displayName}</Typography>
+        <Typography variant="subtitle2">{session?.user?.firstname}</Typography>
 
         <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-          {account.role}
+        {session?.user?.firstname} sam
         </Typography>
       </Box>
     </Box>
@@ -63,10 +94,13 @@ export default function Nav({ openNav, onCloseNav }) {
 
   const renderMenu = (
     <Stack component="nav" spacing={0.5} sx={{ px: 2 }}>
-      {navConfig.map((item) => (
+    {navConfig.map((item) => (
+      // Check if the item is "Log-in" or "Sign-in" and if the user is logged in
+      (item.title === 'login' || item.title === 'register') && session ? null : (
         <NavItem key={item.title} item={item} />
-      ))}
-    </Stack>
+      )
+    ))}
+  </Stack>
   );
 
 
@@ -84,7 +118,7 @@ export default function Nav({ openNav, onCloseNav }) {
     >
       <Logo sx={{ mt: 3, ml: 4 }} />
 
-      {renderAccount}
+       {session ? renderAccount : null}
 
       {renderMenu}
 

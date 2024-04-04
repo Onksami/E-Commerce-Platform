@@ -53,7 +53,7 @@ export default function PostCard({ post, index }) {
       underline="hover"
       sx={{
         height: 44,
-        overflow: 'hidden',
+        overflow: 'auto',
         WebkitLineClamp: 2,
         display: '-webkit-box',
         WebkitBoxOrient: 'vertical',

@@ -4,7 +4,7 @@ export const visuallyHidden = {
   padding: 0,
   width: '1px',
   height: '1px',
-  overflow: 'hidden',
+  overflow: 'auto',
   position: 'absolute',
   whiteSpace: 'nowrap',
   clip: 'rect(0 0 0 0)',

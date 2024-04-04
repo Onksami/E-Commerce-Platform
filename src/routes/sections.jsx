@@ -1,10 +1,9 @@
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useContext } from 'react';
 import { Outlet, Navigate, useRoutes } from 'react-router-dom';
+import { AuthContext } from 'src/context/AuthContext';
+
 import AuthLayout from 'src/layouts/auth';
-
 import DashboardLayout from 'src/layouts/dashboard';
-
-
 
 export const IndexPage = lazy(() => import('src/pages/app'));
 export const BlogPage = lazy(() => import('src/pages/blog'));
@@ -12,13 +11,16 @@ export const UserPage = lazy(() => import('src/pages/user'));
 export const LoginPage = lazy(() => import('src/pages/login'));
 export const Register = lazy(() => import('src/pages/register'));
 export const ProductsPage = lazy(() => import('src/pages/products'));
+export const NewProductsPage = lazy(() => import('src/pages/new-products'));
 export const Page404 = lazy(() => import('src/pages/page-not-found'));
 
 
 // ----------------------------------------------------------------------
 
 export default function Router() {
+  const { session } = useContext(AuthContext);
   const routes = useRoutes([
+
     {
       element: (
         <DashboardLayout>
@@ -31,6 +33,7 @@ export default function Router() {
         { element: <IndexPage />, index: true },
         { path: 'user', element: <UserPage /> },
         { path: 'products', element: <ProductsPage /> },
+        { path: 'newproducts', element: <NewProductsPage /> },
         { path: 'blog', element: <BlogPage /> },
 
       ],
@@ -46,11 +49,11 @@ export default function Router() {
       children: [
         {
           path: 'login',
-          element: <LoginPage />,
+          element: session ? <Navigate to="/products" /> : <LoginPage />,
         },
         {
           path: 'register',
-          element: <Register />,
+          element: session ? <Navigate to="/products" /> : <Register />,
         },
 
 

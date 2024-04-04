@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 
 import Box from '@mui/material/Box';
+import { Button } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import Divider from '@mui/material/Divider';
 import Popover from '@mui/material/Popover';
@@ -10,6 +11,8 @@ import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 
 import { account } from 'src/_mock/account';
+
+import { AuthContext } from "../../../context/AuthContext";
 
 // ----------------------------------------------------------------------
 
@@ -33,16 +36,48 @@ const MENU_OPTIONS = [
 export default function AccountPopover() {
   const [open, setOpen] = useState(null);
 
+
+    const authContext = useContext(AuthContext);
+
+    console.log("Account- Popover authContext", authContext);
+
+    // console.log("Account- Popover authContext", authContext.session.user);
+
+    // console.log("Account- Popover authContext", authContext.session.user.id);
+
+
+
+
+
   const handleOpen = (event) => {
     setOpen(event.currentTarget);
   };
 
-  const handleClose = () => {
-    setOpen(null);
+
+
+  const handleClose = (event) => {
+    localStorage.removeItem("session");
+    authContext.setSession(null);
+
   };
+
+
+
+
+
 
   return (
     <>
+      <Typography variant="subtitle1" style={{color: 'black'}}>
+      {authContext.session?.user.firstname}  
+      </Typography>
+
+      <Typography variant="subtitle2" style={{color: 'black'}}>
+
+        {authContext.session?.user.email}
+
+      </Typography>
+
       <IconButton
         onClick={handleOpen}
         sx={{
@@ -57,21 +92,21 @@ export default function AccountPopover() {
       >
         <Avatar
           src={account.photoURL}
-          alt={account.displayName}
+          alt={authContext.session?.user.firstname}
           sx={{
             width: 36,
             height: 36,
             border: (theme) => `solid 2px ${theme.palette.background.default}`,
           }}
         >
-          {account.displayName.charAt(0).toUpperCase()}
+          {/* {authContext.session?.user.firsname.charAt(0).toUpperCase()} */}
         </Avatar>
       </IconButton>
 
       <Popover
         open={!!open}
         anchorEl={open}
-        onClose={handleClose}
+        onClose={() => setOpen(null)} // Close popover directly without logging out
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
         PaperProps={{
@@ -95,7 +130,7 @@ export default function AccountPopover() {
         <Divider sx={{ borderStyle: 'dashed' }} />
 
         {MENU_OPTIONS.map((option) => (
-          <MenuItem key={option.label} onClick={handleClose}>
+          <MenuItem key={option.label} onClick={() => setOpen(null)}>
             {option.label}
           </MenuItem>
         ))}
@@ -110,7 +145,13 @@ export default function AccountPopover() {
         >
           Logout
         </MenuItem>
+
+        
+
+        
       </Popover>
+
+
     </>
   );
 }

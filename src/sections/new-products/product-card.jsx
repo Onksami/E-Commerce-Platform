@@ -1,18 +1,23 @@
 import PropTypes from 'prop-types';
-import { useState, useEffect } from 'react';
 
-import { Box, Card, Link, Stack, Button, Typography } from '@mui/material';
+import Box from '@mui/material/Box';
+import Link from '@mui/material/Link';
+import Card from '@mui/material/Card';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 
 import { fCurrency } from 'src/utils/format-number';
 
 import Label from 'src/components/label';
-// import { ColorPreview } from 'src/components/color-utils';
+import { ColorPreview } from 'src/components/color-utils';
+
+// ----------------------------------------------------------------------
 
 export default function ShopProductCard({ product }) {
   const renderStatus = (
     <Label
       variant="filled"
-      color={(product.id === 'sale' && 'error') || 'info'}
+      color={(product.status === 'sale' && 'error') || 'info'}
       sx={{
         zIndex: 9,
         top: 16,
@@ -21,31 +26,15 @@ export default function ShopProductCard({ product }) {
         textTransform: 'uppercase',
       }}
     >
-      {product.id}
+      {product.status}
     </Label>
   );
-
-  const [handledProducts, setHandledProducts] = useState([]);
-
-  const handleButtonClick = (product) => {
-    // Eğer handledProducts dizisinde bu ürün yoksa, yeni ürünü ekleyelim
-    if (!handledProducts.some(handledProduct => handledProduct.id === product.id)) {
-      const updatedProducts = [...handledProducts, product];
-      setHandledProducts(updatedProducts);
-      console.log("updatedProducts", updatedProducts);
-    } else {
-      console.log("Bu ürün zaten işlenmiş.");
-    }
-  
-    // Tüm ürünleri konsola yazdır
-    console.log("Handled Products:", handledProducts);
-  };
 
   const renderImg = (
     <Box
       component="img"
       alt={product.name}
-      src={product.price}
+      src={product.cover}
       sx={{
         top: 0,
         width: 1,
@@ -66,7 +55,7 @@ export default function ShopProductCard({ product }) {
           textDecoration: 'line-through',
         }}
       >
-        {product.price && fCurrency(product.price)}
+        {product.priceSale && fCurrency(product.priceSale)}
       </Typography>
       &nbsp;
       {fCurrency(product.price)}
@@ -86,12 +75,11 @@ export default function ShopProductCard({ product }) {
           {product.name}
         </Link>
 
-        <Stack direction="row" alignItems="center" justifyContent="center">
+        <Stack direction="row" alignItems="center" justifyContent="space-between">
+          <ColorPreview colors={product.colors} />
           {renderPrice}
         </Stack>
-        <Button onClick={() => handleButtonClick(product)} variant="contained">Add to the Cart</Button>
       </Stack>
-
     </Card>
   );
 }

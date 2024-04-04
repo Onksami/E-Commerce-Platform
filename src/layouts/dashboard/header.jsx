@@ -1,3 +1,5 @@
+import {  useContext } from 'react';
+
 import PropTypes from 'prop-types';
 
 import Box from '@mui/material/Box';
@@ -19,12 +21,21 @@ import AccountPopover from './common/account-popover';
 import LanguagePopover from './common/language-popover';
 import NotificationsPopover from './common/notifications-popover';
 
+import { AuthContext } from '../../context/AuthContext';
+
 // ----------------------------------------------------------------------
 
 export default function Header({ onOpenNav }) {
   const theme = useTheme();
 
   const lgUp = useResponsive('up', 'lg');
+
+  
+  const authContext = useContext(AuthContext);
+
+  const session =authContext.session; 
+
+  console.log("Header Session", session);
 
   const renderContent = (
     <>

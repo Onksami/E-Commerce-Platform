@@ -1,4 +1,6 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+
+
 
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
@@ -12,6 +14,7 @@ import IconButton from '@mui/material/IconButton';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { alpha, useTheme } from '@mui/material/styles';
 import InputAdornment from '@mui/material/InputAdornment';
+import { useNavigate } from "react-router-dom";
 
 // import { useRouter } from 'src/routes/hooks';
 
@@ -19,11 +22,19 @@ import { bgGradient } from 'src/theme/css';
 
 import Logo from 'src/components/logo';
 import Iconify from 'src/components/iconify';
+import axios from 'axios';
+
+import {AuthContext}  from 'src/context/AuthContext';
 
 // ----------------------------------------------------------------------
 
 export default function LoginView() {
   const theme = useTheme();
+
+  const {session, setSession} = useContext(AuthContext);
+
+  const navigate = useNavigate();
+ 
 
   // const router = useRouter();  it has been commented out to use the onclick funtion
 
@@ -43,15 +54,33 @@ export default function LoginView() {
 
   // const handleClick = () => { router.push('/user'); };
 
-  const handleClick = () => {
-
+  const handleRegister = async () => {
     setLoading(true);
-
-    setTimeout(() => {
-      setLoading(false)
-    }, 2000);
-
+  
+    try {
+      const data = { name, surname, email, password }; // Gather user input data
+  
+      // Make POST request to the API
+      const response = await axios.post("https://express-app-1.up.railway.app/api/v1/users/sign-up", data);
+  
+      console.log("response", response);
+  
+      // Assuming the response contains session data, set it in your context and localStorage
+      setSession(response.data);
+      localStorage.setItem("session", JSON.stringify(response.data));
+  
+      // Navigate to the desired page after successful registration
+      navigate('/products');
+    } catch (error) {
+      console.error("Error during registration:", error);
+    } finally {
+      setLoading(false);
+    }
   };
+
+  
+
+
 
 
 
@@ -89,13 +118,13 @@ export default function LoginView() {
           <Typography variant="body2" sx={{ color: 'text.secondary' }}> Fulfill the blank below to create an account </Typography>
           <>
       <Stack spacing={3}>
-        <TextField name="name" label="Name" />
-        <TextField name="surname" label="Surname" />
-        <TextField name="email" label="Email address" />
-        <TextField name="email" label="Confirmation E-mail address" /> 
+        <TextField name="name" onChange={ (e) => setName(e.target.value)} label="Name" />
+        <TextField name="surname" onChange={ (e) => setSurname(e.target.value)} label="Surname" />
+        <TextField name="email" onChange={ (e) => setEmail(e.target.value)} label="Email address" />
 
-        <TextField
+        <TextField 
           name="password"
+          onChange={ (e) => setPassword(e.target.value)}
           label="Password"
           type={showPassword ? 'text' : 'password'}
           InputProps={{
@@ -105,7 +134,7 @@ export default function LoginView() {
                   <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} /> </IconButton> 
                   </InputAdornment> ), }} />
 
-        <TextField
+        {/* <TextField
           name="password"
           label="Confirmation Password"
           type={showPassword ? 'text' : 'password'}
@@ -118,7 +147,7 @@ export default function LoginView() {
               </InputAdornment>
             ),
           }}
-        />
+        /> */}
       </Stack>
 
       {/* <Stack direction="row" alignItems="center" justifyContent="flex-end" sx={{ my: 3 }}>
@@ -127,6 +156,8 @@ export default function LoginView() {
         </Link>
       </Stack> */}
 
+      {/* <br /> */}
+
 
       <LoadingButton
         fullWidth
@@ -134,8 +165,9 @@ export default function LoginView() {
         type="submit"
         variant="contained"
         color="inherit"
-        onClick={handleClick}
+        onClick={handleRegister}
         loading={loading}
+        style={{ marginTop: '20px' }}
         
       >
         Register
