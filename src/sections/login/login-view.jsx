@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Navigate } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
@@ -19,13 +20,13 @@ import { bgGradient } from 'src/theme/css';
 
 import Logo from 'src/components/logo';
 import Iconify from 'src/components/iconify';
-import { Navigate } from 'react-router-dom';
 
 // ----------------------------------------------------------------------
 
 export default function LoginView() {
   const theme = useTheme();
 
+  // eslint-disable-next-line no-unused-vars
   const router = useRouter();
 
   const [showPassword, setShowPassword] = useState(false);

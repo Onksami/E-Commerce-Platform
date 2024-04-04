@@ -1,5 +1,5 @@
+import { useState } from 'react';
 import PropTypes from 'prop-types';
-import { useState, useEffect } from 'react';
 
 import { Box, Card, Link, Stack, Button, Typography } from '@mui/material';
 
@@ -27,6 +27,7 @@ export default function ShopProductCard({ product }) {
 
   const [handledProducts, setHandledProducts] = useState([]);
 
+  // eslint-disable-next-line no-shadow
   const handleButtonClick = (product) => {
     // Eğer handledProducts dizisinde bu ürün yoksa, yeni ürünü ekleyelim
     if (!handledProducts.some(handledProduct => handledProduct.id === product.id)) {

@@ -1,6 +1,5 @@
-import { useContext, useState } from 'react';
-
-
+import { useState, useContext } from 'react';
+import { useNavigate } from "react-router-dom";
 
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
@@ -14,23 +13,23 @@ import IconButton from '@mui/material/IconButton';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { alpha, useTheme } from '@mui/material/styles';
 import InputAdornment from '@mui/material/InputAdornment';
-import { useNavigate } from "react-router-dom";
 
 // import { useRouter } from 'src/routes/hooks';
 
+import axios from 'axios';
+
 import { bgGradient } from 'src/theme/css';
+import {AuthContext}  from 'src/context/AuthContext';
 
 import Logo from 'src/components/logo';
 import Iconify from 'src/components/iconify';
-import axios from 'axios';
-
-import {AuthContext}  from 'src/context/AuthContext';
 
 // ----------------------------------------------------------------------
 
 export default function LoginView() {
   const theme = useTheme();
 
+  // eslint-disable-next-line no-unused-vars
   const {session, setSession} = useContext(AuthContext);
 
   const navigate = useNavigate();
