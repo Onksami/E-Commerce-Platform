@@ -1,6 +1,5 @@
-import {  useContext } from 'react';
-
 import PropTypes from 'prop-types';
+import {  useContext } from 'react';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
@@ -19,9 +18,8 @@ import Searchbar from './common/searchbar';
 import { NAV, HEADER } from './config-layout';
 import AccountPopover from './common/account-popover';
 import LanguagePopover from './common/language-popover';
-import NotificationsPopover from './common/notifications-popover';
-
 import { AuthContext } from '../../context/AuthContext';
+import NotificationsPopover from './common/notifications-popover';
 
 // ----------------------------------------------------------------------
 
@@ -33,7 +31,8 @@ export default function Header({ onOpenNav }) {
   
   const authContext = useContext(AuthContext);
 
-  const session =authContext.session; 
+  // eslint-disable-next-line prefer-destructuring
+  const session = authContext.session; 
 
   console.log("Header Session", session);
 

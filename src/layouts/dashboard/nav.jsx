@@ -1,5 +1,5 @@
-import { useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
+import { useEffect, useContext } from 'react';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
@@ -14,24 +14,21 @@ import { RouterLink } from 'src/routes/components';
 
 import { useResponsive } from 'src/hooks/use-responsive';
 
-
-
 import Logo from 'src/components/logo';
 import Scrollbar from 'src/components/scrollbar';
 
 import { NAV } from './config-layout';
 import navConfig from './config-navigation';
-
 import { AuthContext } from '../../context/AuthContext';
 
 // ----------------------------------------------------------------------
 
 
-const account = {
-  displayName: 'Test Test.',
-  email: 'test.test@gmail.com',
-  photoURL: '/assets/images/avatars/avatar_25.jpg',
-};
+// const account = {
+//   displayName: 'Test Test.',
+//   email: 'test.test@gmail.com',
+//   photoURL: '/assets/images/avatars/avatar_25.jpg',
+// };
 
 
 
@@ -42,7 +39,9 @@ export default function Nav({ openNav, onCloseNav }) {
   
   const authContext = useContext(AuthContext);
 
-  const session =authContext.session;
+  const {session} = authContext;
+
+  // const session =authContext.session;
 
   console.log("Navbar Session", session);
 

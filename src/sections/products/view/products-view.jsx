@@ -34,11 +34,19 @@ export default function ProductsView() {
     setOpenFilter(false);
   };
 
+
+  // useEffect(() => {
+  //   axios.get('https://express-app-1.up.railway.app/api/v1/products')
+  //   .then(function (response) {
+  //     // handle success
+  //    setProducts(response.data);
+  //   });
+  // }, [])
   
 
   useEffect(() => {
     axios.get('https://express-app-1.up.railway.app/api/v1/products')
-    .then(function (response) {
+    .then((response) => {
       // handle success
      setProducts(response.data);
     });

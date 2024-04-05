@@ -1,9 +1,9 @@
 import { lazy, Suspense, useContext } from 'react';
 import { Outlet, Navigate, useRoutes } from 'react-router-dom';
-import { AuthContext } from 'src/context/AuthContext';
 
 import AuthLayout from 'src/layouts/auth';
 import DashboardLayout from 'src/layouts/dashboard';
+import { AuthContext } from 'src/context/AuthContext';
 
 export const IndexPage = lazy(() => import('src/pages/app'));
 export const BlogPage = lazy(() => import('src/pages/blog'));
