@@ -68,12 +68,12 @@ export default function AccountPopover() {
   return (
     <>
       <Typography variant="subtitle1" style={{color: 'black'}}>
-      {authContext.session?.user.firstname}  
+      {authContext?.session?.user?.firstname}  
       </Typography>
 
       <Typography variant="subtitle2" style={{color: 'black'}}>
 
-        {authContext.session?.user.email}
+        {authContext?.session?.user?.email}
 
       </Typography>
 
@@ -91,7 +91,7 @@ export default function AccountPopover() {
       >
         <Avatar
           src={account.photoURL}
-          alt={authContext.session?.user.firstname}
+          alt={authContext?.session?.user?.firstname}
           sx={{
             width: 36,
             height: 36,

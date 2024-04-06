@@ -1,5 +1,6 @@
-import { useState } from 'react';
-import { Navigate } from 'react-router-dom';
+import { useState,useContext } from 'react';
+// import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
@@ -21,9 +22,16 @@ import { bgGradient } from 'src/theme/css';
 import Logo from 'src/components/logo';
 import Iconify from 'src/components/iconify';
 
+import { AuthContext } from "../../context/AuthContext";
+
+
 // ----------------------------------------------------------------------
 
 export default function LoginView() {
+
+  const authContext = useContext(AuthContext);
+
+  const navigate = useNavigate(); // useNavigate kancasını kullanarak navigate fonksiyonunu tanımlayın
   const theme = useTheme();
 
   // eslint-disable-next-line no-unused-vars
@@ -33,6 +41,34 @@ export default function LoginView() {
 
   const [userEmail, setUserEmail] = useState('');
   const [userPassword, setUserPassword] = useState('');
+
+  
+  // const handleClick = async () => {
+  //   try {
+  //     // Perform an API request to authenticate the user
+  //     const response = await fetch('https://express-app-1.up.railway.app/api/v1/users/sign-in', {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json'
+  //       },
+  //       body: JSON.stringify({
+  //         email: userEmail,
+  //         password: userPassword
+  //       })
+  //     });
+  
+  //     if (response.ok) {
+  //       // If authentication is successful, navigate to the dashboard or product page
+  //       navigate('/dashboard'); // useNavigate kancasını kullanarak yönlendirme yapın
+  //     } else {
+  //       // Handle authentication failure (e.g., show an error message)
+  //       console.error('Authentication failed');
+  //     }
+  //   } catch (error) {
+  //     console.error('Error occurred during authentication:', error);
+  //   }
+  // };
+
 
   const handleClick = async () => {
     try {
@@ -49,8 +85,17 @@ export default function LoginView() {
       });
   
       if (response.ok) {
-        // If authentication is successful, navigate to the dashboard or product page
-        Navigate('/dashboard');
+        // If authentication is successful, get user data from the response
+        const userData = await response.json();
+  
+        // Save user data to session context
+        authContext.setSession(userData);
+  
+        // Save user data to local storage
+        localStorage.setSession('userData', JSON.stringify(userData));
+  
+        // Navigate to the dashboard or product page
+        navigate('/dashboard');
       } else {
         // Handle authentication failure (e.g., show an error message)
         console.error('Authentication failed');
@@ -59,11 +104,55 @@ export default function LoginView() {
       console.error('Error occurred during authentication:', error);
     }
   };
-
+  
   const handleCreateAccountClick = () => {
     // Navigate to the create account page
-    Navigate('/register');
+    navigate('/register');
   };
+  
+  // Function to set session data
+  // const setSessionData = (userData) => {
+  //   // Assuming you have a context called 'authContext'
+  //   // Set user data to session context
+  //   authContext.session(userData);
+  // };
+  
+  // // Function to retrieve session data
+  // const getSessionData = () => {
+  //   // Assuming you have a context called 'authContext'
+  //   // Retrieve user data from session context
+  //   return authContext.userData;
+  // };
+  
+  // // Function to clear session data
+  // const clearSessionData = () => {
+  //   // Assuming you have a context called 'authContext'
+  //   // Clear user data from session context
+  //   authContext.clearUserData();
+  // };
+  
+  // Function to retrieve user data from local storage
+  // const getStoredUserData = () => {
+  //   const storedUserData = localStorage.getItem('userData');
+  //   return storedUserData ? JSON.parse(storedUserData) : null;
+  // };
+  
+  // Function to clear user data from local storage
+  // const clearStoredUserData = () => {
+  //   localStorage.removeItem('userData');
+  // };
+  
+
+
+
+
+
+
+
+  // const handleCreateAccountClick = () => {
+  //   // Navigate to the create account page
+  //   navigate('/register');
+  // };
 
 
 
