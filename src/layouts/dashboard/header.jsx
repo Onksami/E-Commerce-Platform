@@ -36,6 +36,8 @@ export default function Header({ onOpenNav }) {
 
   console.log("Header Session", session);
 
+  const shouldRenderContent = session !== null; // if session value is not "null", then it renders true, 
+
   const renderContent = (
     <>
       {!lgUp && (
@@ -48,11 +50,14 @@ export default function Header({ onOpenNav }) {
 
       <Box sx={{ flexGrow: 1 }} />
 
+      {shouldRenderContent && (   // when the session is not null
+
       <Stack direction="row" alignItems="center" spacing={1}>
         <LanguagePopover />
         <NotificationsPopover />
         <AccountPopover />
       </Stack>
+      )}
     </>
   );
 
