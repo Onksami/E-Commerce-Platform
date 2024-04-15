@@ -1,8 +1,10 @@
 import PropTypes from 'prop-types';
 import {  useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button'
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import { useTheme } from '@mui/material/styles';
@@ -21,12 +23,15 @@ import LanguagePopover from './common/language-popover';
 import { AuthContext } from '../../context/AuthContext';
 import NotificationsPopover from './common/notifications-popover';
 
+
 // ----------------------------------------------------------------------
 
 export default function Header({ onOpenNav }) {
   const theme = useTheme();
 
   const lgUp = useResponsive('up', 'lg');
+
+    const navigate = useNavigate(); // useNavigate kancasını kullanarak navigate fonksiyonunu tanımlayın
 
   
   const authContext = useContext(AuthContext);
@@ -36,29 +41,32 @@ export default function Header({ onOpenNav }) {
 
   console.log("Header Session", session);
 
-  const shouldRenderContent = session !== null; // if session value is not "null", then it renders true, 
+  // const shouldRenderContent = session !== null; // if session value is not "null", then it renders true, 
 
   const renderContent = (
     <>
-      {!lgUp && (
-        <IconButton onClick={onOpenNav} sx={{ mr: 1 }}>
-          <Iconify icon="eva:menu-2-fill" />
-        </IconButton>
-      )}
+    {!lgUp && (
+      <IconButton onClick={onOpenNav} sx={{ mr: 1 }}>
+        <Iconify icon="eva:menu-2-fill" />
+      </IconButton>
+    )}
 
-      <Searchbar />
+    <Searchbar />
 
-      <Box sx={{ flexGrow: 1 }} />
+    <Box sx={{ flexGrow: 1 }} />
 
-      {shouldRenderContent && (   // when the session is not null
-
+    {session === null ? ( // Check if session is null
+      <Button onClick={() => navigate('/login')} color="primary"> 
+        Login
+      </Button>
+    ) : (
       <Stack direction="row" alignItems="center" spacing={1}>
         <LanguagePopover />
         <NotificationsPopover />
         <AccountPopover />
       </Stack>
-      )}
-    </>
+    )}
+  </>
   );
 
   return (
