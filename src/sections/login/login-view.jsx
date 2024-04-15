@@ -109,50 +109,6 @@ export default function LoginView() {
     // Navigate to the create account page
     navigate('/register');
   };
-  
-  // Function to set session data
-  // const setSessionData = (userData) => {
-  //   // Assuming you have a context called 'authContext'
-  //   // Set user data to session context
-  //   authContext.session(userData);
-  // };
-  
-  // // Function to retrieve session data
-  // const getSessionData = () => {
-  //   // Assuming you have a context called 'authContext'
-  //   // Retrieve user data from session context
-  //   return authContext.userData;
-  // };
-  
-  // // Function to clear session data
-  // const clearSessionData = () => {
-  //   // Assuming you have a context called 'authContext'
-  //   // Clear user data from session context
-  //   authContext.clearUserData();
-  // };
-  
-  // Function to retrieve user data from local storage
-  // const getStoredUserData = () => {
-  //   const storedUserData = localStorage.getItem('userData');
-  //   return storedUserData ? JSON.parse(storedUserData) : null;
-  // };
-  
-  // Function to clear user data from local storage
-  // const clearStoredUserData = () => {
-  //   localStorage.removeItem('userData');
-  // };
-  
-
-
-
-
-
-
-
-  // const handleCreateAccountClick = () => {
-  //   // Navigate to the create account page
-  //   navigate('/register');
-  // };
 
 
 
