@@ -2,7 +2,6 @@ import { useState, useContext } from 'react';
 import { useNavigate } from "react-router-dom";
 
 import Box from '@mui/material/Box';
-import Link from '@mui/material/Link';
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
@@ -92,7 +91,10 @@ export default function LoginView() {
         <Card sx={{ p: 5, width: 1, maxWidth: 420, }} >
           <Typography  variant="h4">Register</Typography>
 
-          <Typography variant="body2" sx={{ mt: 2, mb: 5 }}> Don’t have an account? <Link variant="subtitle2" sx={{ ml: 0.5 }}> Create Account. </Link></Typography>
+          <Typography variant="body2" sx={{ mt: 2, mb: 5 }}> Are you already a member ? <Button onClick={() => navigate('/login')} color="primary"> 
+        Sign in
+      </Button></Typography>
+
 
           <Stack direction="row" spacing={2}>
             <Button

@@ -227,10 +227,13 @@ export default function LoginView() {
           <Typography variant="h4">Sign in</Typography>
 
           <Typography variant="body2" sx={{ mt: 2, mb: 5 }}>
-            To create an account.
-            <Link variant="subtitle2" sx={{ ml: 0.5 }} onClick={handleCreateAccountClick} >
+            To create an account
+            {/* <Link variant="subtitle2" sx={{ ml: 0.5 }}  >
               Create Account.
-            </Link>
+            </Link>  */}
+            <Button onClick={handleCreateAccountClick} color="primary"> 
+              Register
+            </Button>
           </Typography>
 
           <Stack direction="row" spacing={2}>
