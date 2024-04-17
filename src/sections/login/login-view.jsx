@@ -43,32 +43,6 @@ export default function LoginView() {
   const [userPassword, setUserPassword] = useState('');
 
   
-  // const handleClick = async () => {
-  //   try {
-  //     // Perform an API request to authenticate the user
-  //     const response = await fetch('https://express-app-1.up.railway.app/api/v1/users/sign-in', {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json'
-  //       },
-  //       body: JSON.stringify({
-  //         email: userEmail,
-  //         password: userPassword
-  //       })
-  //     });
-  
-  //     if (response.ok) {
-  //       // If authentication is successful, navigate to the dashboard or product page
-  //       navigate('/dashboard'); // useNavigate kancasını kullanarak yönlendirme yapın
-  //     } else {
-  //       // Handle authentication failure (e.g., show an error message)
-  //       console.error('Authentication failed');
-  //     }
-  //   } catch (error) {
-  //     console.error('Error occurred during authentication:', error);
-  //   }
-  // };
-
 
   const handleClick = async () => {
     try {

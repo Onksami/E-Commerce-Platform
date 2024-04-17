@@ -85,7 +85,7 @@ export default function Nav({ openNav, onCloseNav }) {
         <Typography variant="subtitle2">{session?.user?.firstname}</Typography>
 
         <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-        {session?.user?.firstname} sam
+        {session?.user?.email} 
         </Typography>
       </Box>
     </Box>

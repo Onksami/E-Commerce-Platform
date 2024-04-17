@@ -40,13 +40,6 @@ export default function AccountPopover() {
 
     console.log("Account - Popover authContext", authContext);
 
-    // console.log("Account- Popover authContext", authContext.session.user);
-
-    // console.log("Account- Popover authContext", authContext.session.user.id);
-
-
-
-
 
   const handleOpen = (event) => {
     setOpen(event.currentTarget);
@@ -83,7 +76,7 @@ export default function AccountPopover() {
       >
         <Avatar
           src={account.photoURL}
-          alt={authContext?.session?.userData?.firstName}
+          alt={authContext?.session?.user?.firstName}
           sx={{
             width: 36,
             height: 36,
@@ -111,10 +104,10 @@ export default function AccountPopover() {
       >
         <Box sx={{ my: 1.5, px: 2 }}>
           <Typography variant="subtitle2" noWrap>
-          {authContext?.session?.userData?.firstName}
+          {authContext?.session?.user?.firstname} 
           </Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-          {authContext?.session?.userData?.email}
+          {authContext?.session?.user?.email}
           </Typography>
         </Box>
 

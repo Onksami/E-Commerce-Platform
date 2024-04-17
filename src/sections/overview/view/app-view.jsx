@@ -1,3 +1,4 @@
+import { useContext } from 'react';
 import { faker } from '@faker-js/faker';
 
 import Container from '@mui/material/Container';
@@ -15,14 +16,20 @@ import AppWidgetSummary from '../app-widget-summary';
 import AppTrafficBySite from '../app-traffic-by-site';
 import AppCurrentSubject from '../app-current-subject';
 import AppConversionRates from '../app-conversion-rates';
+import { AuthContext } from "../../../context/AuthContext";
 
 // ----------------------------------------------------------------------
 
 export default function AppView() {
+
+  const authContext = useContext(AuthContext);
+
+  console.log("section, overview, view. app-view -  authContext", authContext);
+
   return (
     <Container maxWidth="xl">
       <Typography variant="h4" sx={{ mb: 5 }}>
-        Hi, Welcome 👋
+        Welcome {authContext?.session?.userData?.firstName} 👋
       </Typography>
 
       <Grid container spacing={3}>
