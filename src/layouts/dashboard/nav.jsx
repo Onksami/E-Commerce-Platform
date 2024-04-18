@@ -82,10 +82,10 @@ export default function Nav({ openNav, onCloseNav }) {
       <Avatar src={photoURL} alt="photoURL" />
 
       <Box sx={{ ml: 2 }}>
-        <Typography variant="subtitle2">{session?.user?.firstname}</Typography>
+        <Typography variant="subtitle2">{session?.userData?.firstName}</Typography>
 
         <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-        {session?.user?.email} 
+        {session?.userData?.email} 
         </Typography>
       </Box>
     </Box>

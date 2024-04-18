@@ -76,7 +76,7 @@ export default function AccountPopover() {
       >
         <Avatar
           src={account.photoURL}
-          alt={authContext?.session?.user?.firstName}
+          alt={authContext?.session?.userData?.firstName}
           sx={{
             width: 36,
             height: 36,
@@ -104,10 +104,10 @@ export default function AccountPopover() {
       >
         <Box sx={{ my: 1.5, px: 2 }}>
           <Typography variant="subtitle2" noWrap>
-          {authContext?.session?.user?.firstname} 
+          {authContext?.session?.userData?.firstName}
           </Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-          {authContext?.session?.user?.email}
+          {authContext?.session?.userData?.email}
           </Typography>
         </Box>
 
