@@ -104,10 +104,10 @@ export default function AccountPopover() {
       >
         <Box sx={{ my: 1.5, px: 2 }}>
           <Typography variant="subtitle2" noWrap>
-          {authContext?.session?.userData?.firstName}
+          {authContext?.session?.user.firstname}
           </Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-          {authContext?.session?.userData?.email}
+          {authContext?.session?.user?.email}
           </Typography>
         </Box>
 

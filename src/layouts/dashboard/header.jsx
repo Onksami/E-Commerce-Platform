@@ -55,19 +55,6 @@ export default function Header({ onOpenNav }) {
 
     <Box sx={{ flexGrow: 1 }} />
 
-
-    {/* {session === null ? ( // Check if session is null (login)
-      <Button onClick={() => navigate('/login')} color="primary"> 
-        Login
-      </Button>  
-    ) : (
-      <Stack direction="row" alignItems="center" spacing={1}>
-        <LanguagePopover />
-        <NotificationsPopover />
-        <AccountPopover />
-      </Stack>
-    )} */}
-    
     
     {session === null ? ( // Check if session is null 
     <Stack direction="row" alignItems="center" spacing={1}> 

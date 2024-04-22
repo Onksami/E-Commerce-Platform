@@ -44,6 +44,44 @@ export default function LoginView() {
 
   
 
+  // const handleClick = async () => {
+  //   try {
+  //     // Perform an API request to authenticate the user
+  //     const response = await fetch('https://express-app-1.up.railway.app/api/v1/users/sign-in', {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json'
+  //       },
+  //       body: JSON.stringify({
+  //         email: userEmail,
+  //         password: userPassword
+  //       })
+  //     });
+  
+  //     if (response.ok) {
+  //       // If authentication is successful, get user data from the response
+  //       const userData = await response.json();
+  
+  //       // Save user data to session context
+  //       authContext.setSession(userData);
+  
+  //       // Save user data to local storage
+  //       localStorage.setSession('userData', JSON.stringify(userData));
+  
+  //       // Navigate to the dashboard or product page
+  //       navigate('/dashboard');
+  //     } else {
+  //       // Handle authentication failure (e.g., show an error message)
+  //       console.error('Authentication failed');
+  //     }
+  //   } catch (error) {
+  //     console.error('Error occurred during authentication:', error);
+  //   }
+  // };
+  
+
+
+
   const handleClick = async () => {
     try {
       // Perform an API request to authenticate the user
@@ -59,17 +97,32 @@ export default function LoginView() {
       });
   
       if (response.ok) {
-        // If authentication is successful, get user data from the response
-        const userData = await response.json();
+        // If authentication is successful, get the authentication token from the response
+        const { token } = await response.json(); // Assuming the token is returned in the response body
   
-        // Save user data to session context
-        authContext.setSession(userData);
+        // Fetch user data using the obtained token
+        const userResponse = await fetch('https://express-app-1.up.railway.app/api/v1/users/account', {
+          headers: {
+            authorization: `Bearer ${token}`, // Use the obtained token in the Authorization header
+          },
+        });
   
-        // Save user data to local storage
-        localStorage.setSession('userData', JSON.stringify(userData));
+        if (userResponse.ok) {
+          // If user data fetching is successful, get user data
+          const user = await userResponse.json();
   
-        // Navigate to the dashboard or product page
-        navigate('/dashboard');
+          // Save user  to session context
+          authContext.setSession(user);
+  
+          // Save user  to local storage
+          localStorage.setItem('user', JSON.stringify(user));
+  
+          // Navigate to the dashboard or product page
+          navigate('/dashboard');
+        } else {
+          // Handle failure to fetch user data
+          console.error('Failed to fetch user data');
+        }
       } else {
         // Handle authentication failure (e.g., show an error message)
         console.error('Authentication failed');
@@ -78,7 +131,11 @@ export default function LoginView() {
       console.error('Error occurred during authentication:', error);
     }
   };
-  
+
+
+
+
+
   const handleCreateAccountClick = () => {
     // Navigate to the create account page
     navigate('/register');

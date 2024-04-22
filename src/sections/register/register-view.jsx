@@ -135,20 +135,7 @@ export default function LoginView() {
                   <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} /> </IconButton> 
                   </InputAdornment> ), }} />
 
-        {/* <TextField
-          name="password"
-          label="Confirmation Password"
-          type={showPassword ? 'text' : 'password'}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
-                  <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-        /> */}
+
       </Stack>
 
       {/* <Stack direction="row" alignItems="center" justifyContent="flex-end" sx={{ my: 3 }}>
