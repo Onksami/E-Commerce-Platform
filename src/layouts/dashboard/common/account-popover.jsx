@@ -48,7 +48,7 @@ export default function AccountPopover() {
 
 
   const handleClose = (event) => {
-    localStorage.removeItem("session");
+    localStorage.removeItem("token");
     authContext.setSession(null);
 
   };
@@ -104,7 +104,7 @@ export default function AccountPopover() {
       >
         <Box sx={{ my: 1.5, px: 2 }}>
           <Typography variant="subtitle2" noWrap>
-          {authContext?.session?.user.firstname}
+          {authContext?.session?.user.firstName}
           </Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
           {authContext?.session?.user?.email}

@@ -1,4 +1,4 @@
-import { useState,useContext } from 'react';
+import { useState, useContext } from 'react';
 // import { Navigate } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
@@ -22,13 +22,12 @@ import { bgGradient } from 'src/theme/css';
 import Logo from 'src/components/logo';
 import Iconify from 'src/components/iconify';
 
-import { AuthContext } from "../../context/AuthContext";
-
+import axios from 'axios';
+import { AuthContext } from '../../context/AuthContext';
 
 // ----------------------------------------------------------------------
 
 export default function LoginView() {
-
   const authContext = useContext(AuthContext);
 
   const navigate = useNavigate(); // useNavigate kancasını kullanarak navigate fonksiyonunu tanımlayın
@@ -41,8 +40,6 @@ export default function LoginView() {
 
   const [userEmail, setUserEmail] = useState('');
   const [userPassword, setUserPassword] = useState('');
-
-  
 
   // const handleClick = async () => {
   //   try {
@@ -57,17 +54,17 @@ export default function LoginView() {
   //         password: userPassword
   //       })
   //     });
-  
+
   //     if (response.ok) {
   //       // If authentication is successful, get user data from the response
   //       const userData = await response.json();
-  
+
   //       // Save user data to session context
   //       authContext.setSession(userData);
-  
+
   //       // Save user data to local storage
   //       localStorage.setSession('userData', JSON.stringify(userData));
-  
+
   //       // Navigate to the dashboard or product page
   //       navigate('/dashboard');
   //     } else {
@@ -78,76 +75,68 @@ export default function LoginView() {
   //     console.error('Error occurred during authentication:', error);
   //   }
   // };
-  
-
-
 
   const handleClick = async () => {
     try {
       // Perform an API request to authenticate the user
-      const response = await fetch('https://express-app-1.up.railway.app/api/v1/users/sign-in', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          email: userEmail,
-          password: userPassword
-        })
-      });
-  
-      if (response.ok) {
-        // If authentication is successful, get the authentication token from the response
-        const { token } = await response.json(); // Assuming the token is returned in the response body
-  
-        // Fetch user data using the obtained token
-        const userResponse = await fetch('https://express-app-1.up.railway.app/api/v1/users/account', {
-          headers: {
-            authorization: `Bearer ${token}`, // Use the obtained token in the Authorization header
-          },
-        });
-  
-        if (userResponse.ok) {
-          // If user data fetching is successful, get user data
-          const user = await userResponse.json();
-  
-          // Save user  to session context
-          authContext.setSession(user);
-  
-          // Save user  to local storage
-          localStorage.setItem('user', JSON.stringify(user));
-  
-          // Navigate to the dashboard or product page
-          navigate('/dashboard');
-        } else {
-          // Handle failure to fetch user data
-          console.error('Failed to fetch user data');
-        }
-      } else {
-        // Handle authentication failure (e.g., show an error message)
-        console.error('Authentication failed');
+      const data = {
+        email: userEmail,
+
+        password: userPassword,
+      }; // Gather user input data
+      // Make POST request to the API
+      const response = await axios.post(
+        'https://express-app-1.up.railway.app/api/v1/users/sign-in',
+        data
+      );
+
+      console.log('Sign-in response', response);
+
+      if (response.status === 200) {
+        const token = response.data.token
+        localStorage.setItem("token",token);
+        const userData = await axios.get(
+          'https://express-app-1.up.railway.app/api/v1/users/account',
+          {
+            headers: {
+              authorization: token,
+            }, 
+
+
+          }
+        );
+        console.log("Auth userdata" , userData);
+        const session = {
+          user : userData.data.data
+        };
+
+        authContext.setSession(session);
+        navigate('/products');
+
+
+
+        
+
+
       }
     } catch (error) {
       console.error('Error occurred during authentication:', error);
     }
   };
 
-
-
-
-
   const handleCreateAccountClick = () => {
     // Navigate to the create account page
     navigate('/register');
   };
 
-
-
-
   const renderForm = (
     <>
       <Stack spacing={3}>
-        <TextField name="email" label="Email address" onChange={(e) => setUserEmail(e.target.value)}/>
+        <TextField
+          name="email"
+          label="Email address"
+          onChange={(e) => setUserEmail(e.target.value)}
+        />
 
         <TextField
           name="password"
@@ -218,7 +207,7 @@ export default function LoginView() {
             {/* <Link variant="subtitle2" sx={{ ml: 0.5 }}  >
               Create Account.
             </Link>  */}
-            <Button onClick={handleCreateAccountClick} color="primary"> 
+            <Button onClick={handleCreateAccountClick} color="primary">
               Register
             </Button>
           </Typography>
@@ -267,4 +256,3 @@ export default function LoginView() {
     </Box>
   );
 }
-
