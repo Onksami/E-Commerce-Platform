@@ -26,6 +26,7 @@ import Iconify from 'src/components/iconify';
 // ----------------------------------------------------------------------
 
 export default function LoginView() {
+  const authContext = useContext(AuthContext);
   const theme = useTheme();
 
   // eslint-disable-next-line no-unused-vars
@@ -39,47 +40,61 @@ export default function LoginView() {
   const [showPassword, setShowPassword] = useState(false);
 
 
-  const [name, setName] = useState("");
-  const [surname, setSurname] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [userName, setUserName] = useState("");
+  const [userSurname, setUserSurname] = useState("");
+  const [userEmail, setUserEmail] = useState('');
+  const [userPassword, setUserPassword] = useState('');
 
 
   const [loading, setLoading] = useState(false);
 
 
 
+  
 
-  // const handleClick = () => { router.push('/user'); };
+const handleRegister = async () => {
+  try {
+    // Perform an API request to authenticate the user
+    const data = {
+      email: userEmail,
+      password: userPassword,
+      name: userName,
+      surName: userSurname,
+    }; // Gather user input data
+    // Make POST request to the API
+    const response = await axios.post(
+      'https://express-app-1.up.railway.app/api/v1/users/sign-up',
+      data
+    );
 
-  const handleRegister = async () => {
-    setLoading(true);
-  
-    try {
-      const data = { name, surname, email, password }; // Gather user input data
-  
-      // Make POST request to the API
-      const response = await axios.post("https://express-app-1.up.railway.app/api/v1/users/sign-up", data);
-  
-      console.log("response", response);
-  
-      // Assuming the response contains session data, set it in your context and localStorage
-      setSession(response.data);
-      localStorage.setItem("session", JSON.stringify(response.data));
-  
-      // Navigate to the desired page after successful registration
+    console.log('Sign-in response', response);
+
+    if (response.status === 200) {
+      const token = response.data.token
+      localStorage.setItem("token",token);
+      const userData = await axios.get(
+        'https://express-app-1.up.railway.app/api/v1/users/account',
+        {
+          headers: {
+            authorization: token,
+          }, 
+
+
+        }
+      );
+      console.log("Auth userdata" , userData);
+      const session = {
+        user : userData.data.data
+      };
+
+      authContext.setSession(session);
       navigate('/products');
-    } catch (error) {
-      console.error("Error during registration:", error);
-    } finally {
-      setLoading(false);
+
     }
-  };
-
-  
-
-
-
+  } catch (error) {
+    console.error('Error occurred during authentication:', error);
+  }
+};
 
 
 
@@ -91,9 +106,11 @@ export default function LoginView() {
         <Card sx={{ p: 5, width: 1, maxWidth: 420, }} >
           <Typography  variant="h4">Register</Typography>
 
-          <Typography variant="body2" sx={{ mt: 2, mb: 5 }}> Are you already a member ? <Button onClick={() => navigate('/login')} color="primary"> 
-        Sign in
-      </Button></Typography>
+          <Typography variant="body2" sx={{ mt: 2, mb: 5 }}> Are you        already a member ? 
+            <Button onClick={() => navigate('/login')} color="primary"> 
+              Sign in
+            </Button>
+          </Typography>
 
 
           <Stack direction="row" spacing={2}>
@@ -119,13 +136,13 @@ export default function LoginView() {
           <Typography variant="body2" sx={{ color: 'text.secondary' }}> Fulfill the blank below to create an account </Typography>
           <>
       <Stack spacing={3}>
-        <TextField name="name" onChange={ (e) => setName(e.target.value)} label="Name" />
-        <TextField name="surname" onChange={ (e) => setSurname(e.target.value)} label="Surname" />
-        <TextField name="email" onChange={ (e) => setEmail(e.target.value)} label="Email address" />
+        <TextField name="name" onChange={ (e) => setUserName(e.target.value)} label="Name" />
+        <TextField name="surname" onChange={ (e) => setUserSurname(e.target.value)} label="Surname" />
+        <TextField name="email" onChange={ (e) => setUserEmail(e.target.value)} label="Email address" />
 
         <TextField 
           name="password"
-          onChange={ (e) => setPassword(e.target.value)}
+          onChange={ (e) => setUserPassword(e.target.value)}
           label="Password"
           type={showPassword ? 'text' : 'password'}
           InputProps={{

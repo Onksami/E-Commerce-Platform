@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { useState, useContext } from 'react';
 // import { Navigate } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
@@ -22,7 +23,6 @@ import { bgGradient } from 'src/theme/css';
 import Logo from 'src/components/logo';
 import Iconify from 'src/components/iconify';
 
-import axios from 'axios';
 import { AuthContext } from '../../context/AuthContext';
 
 // ----------------------------------------------------------------------
@@ -112,11 +112,6 @@ export default function LoginView() {
 
         authContext.setSession(session);
         navigate('/products');
-
-
-
-        
-
 
       }
     } catch (error) {
