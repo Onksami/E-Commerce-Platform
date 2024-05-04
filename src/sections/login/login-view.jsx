@@ -39,7 +39,12 @@ export default function LoginView() {
   const [showPassword, setShowPassword] = useState(false);
 
   const [userEmail, setUserEmail] = useState('');
+  const [userName, setUserName] = useState('');
   const [userPassword, setUserPassword] = useState('');
+  const [userFirstName, setUserFirstName] = useState("");
+  const [userLastName, setUserLastName] = useState("");
+  const [userStatus, setUserStatus] = useState("");
+  const [userValid, setUserValid] = useState(true);
 
   // const handleClick = async () => {
   //   try {
@@ -76,30 +81,55 @@ export default function LoginView() {
   //   }
   // };
 
+
+
+  // --------------------------------------- first URL done here ----------------------------------------------------
+
+
+  // --------------------------------------- new URL starts here ---------------------------------------------------
+
   const handleClick = async () => {
     try {
       // Perform an API request to authenticate the user
+
+
+      const urlSignIn = 'https://java-api-production.up.railway.app/auth/login';
+      const headers = {
+        'accept': '*/*',
+        'Content-Type': 'application/json'
+      };
+
       const data = {
         email: userEmail,
+        
 
         password: userPassword,
+
+        firstName: userFirstName,
+
+        lastName: userLastName,
+
+  
+
       }; // Gather user input data
       // Make POST request to the API
       const response = await axios.post(
-        'https://express-app-1.up.railway.app/api/v1/users/sign-in',
-        data
+        urlSignIn,
+        data,
+        { headers },
       );
 
       console.log('Sign-in response', response);
 
+      const urlAccountDetail = "https://java-api-production.up.railway.app/users/account";
       if (response.status === 200) {
-        const token = response.data.token
-        localStorage.setItem("token",token);
+        const accessToken = response.data.accessToken
+        localStorage.setItem("accessToken",accessToken);
         const userData = await axios.get(
-          'https://express-app-1.up.railway.app/api/v1/users/account',
+          urlAccountDetail,
           {
             headers: {
-              authorization: token,
+              Authorization: accessToken,
             }, 
 
 
@@ -107,7 +137,7 @@ export default function LoginView() {
         );
         console.log("Auth userdata" , userData);
         const session = {
-          user : userData.data.data
+          user : userData.data
         };
 
         authContext.setSession(session);
@@ -119,6 +149,69 @@ export default function LoginView() {
     }
   };
 
+
+
+  // try for fetch
+
+  // const handleClick = async () => {
+  //   try {
+  //     const urlSignIn = 'https://java-api-production.up.railway.app/auth/login';
+  //     const headers = {
+  //       'accept': '*/*',
+  //       'Content-Type': 'application/json'
+  //     };
+  
+  //     const data = {
+  //       email: userEmail,
+  //       password: userPassword,
+  //       firstName: userFirstName,
+  //       lastName: userLastName,
+  //       status: userStatus,
+  //       valid: userValid,
+  //     };
+  
+  //     // Make POST request to the API
+  //     const signInResponse = await fetch(urlSignIn, {
+  //       method: 'POST',
+  //       headers: headers,
+  //       body: JSON.stringify(data)
+  //     });
+  
+  //     if (signInResponse.status === 200) {
+  //       const signInData = await signInResponse.json();
+  //       const token = signInData.token;
+  //       localStorage.setItem("token", token);
+  
+  //       const urlAccountDetail = "https://express-app-1.up.railway.app/api/v1/users/account";
+  //       const accountDetailResponse = await fetch(urlAccountDetail, {
+  //         headers: {
+  //           authorization: token
+  //         }
+  //       });
+  
+  //       if (accountDetailResponse.ok) {
+  //         const accountDetailData = await accountDetailResponse.json();
+  //         const session = {
+  //           user: accountDetailData.data
+  //         };
+  //         authContext.setSession(session);
+  //         navigate('/products');
+  //       } else {
+  //         console.error('Failed to fetch account details:', accountDetailResponse.status);
+  //       }
+  //     } else {
+  //       console.error('Failed to sign in:', signInResponse.status);
+  //     }
+  //   } catch (error) {
+  //     console.error('Error occurred during authentication:', error);
+  //   }
+  // };
+
+
+
+
+
+  
   const handleCreateAccountClick = () => {
     // Navigate to the create account page
     navigate('/register');

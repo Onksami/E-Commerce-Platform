@@ -39,11 +39,15 @@ export default function LoginView() {
 
   const [showPassword, setShowPassword] = useState(false);
 
-
-  const [userName, setUserName] = useState("");
-  const [userSurname, setUserSurname] = useState("");
   const [userEmail, setUserEmail] = useState('');
+  const [userName, setUserName] = useState("");
   const [userPassword, setUserPassword] = useState('');
+  const [userFirstName, setUserFirstName] = useState("");
+  const [userLastName, setUserLastName] = useState("");
+  const [userStatus, setUserStatus] = useState("");
+  const [userValid, setUserValid] = useState();
+
+
 
 
   const [loading, setLoading] = useState(false);
@@ -55,28 +59,41 @@ export default function LoginView() {
 const handleRegister = async () => {
   try {
     // Perform an API request to authenticate the user
+
+    const urlSignUp = 'https://java-api-production.up.railway.app/auth/register';
+    const headers = {
+      'accept': '*/*',
+      'Content-Type': 'application/json'
+    };
     const data = {
       email: userEmail,
+
+
       password: userPassword,
-      name: userName,
-      surName: userSurname,
-    }; // Gather user input data
+
+      firstName: userFirstName,
+
+      lastName: userLastName,
+
+
+    };  // Gather user input data
     // Make POST request to the API
     const response = await axios.post(
-      'https://express-app-1.up.railway.app/api/v1/users/sign-up',
-      data
+      urlSignUp,
+      data,
+      { headers },
     );
 
-    console.log('Sign-in response', response);
+    console.log('Sign-up response', response);
 
-    if (response.status === 200) {
-      const token = response.data.token
-      localStorage.setItem("token",token);
+    if (response.status === 201) {
+      const accessToken = response.data.accessToken
+      localStorage.setItem("accessToken",accessToken);
       const userData = await axios.get(
-        'https://express-app-1.up.railway.app/api/v1/users/account',
+        'https://java-api-production.up.railway.app/users/account',
         {
           headers: {
-            authorization: token,
+            Authorization: accessToken,
           }, 
 
 
@@ -84,7 +101,7 @@ const handleRegister = async () => {
       );
       console.log("Auth userdata" , userData);
       const session = {
-        user : userData.data.data
+        user : userData.data
       };
 
       authContext.setSession(session);
@@ -136,8 +153,8 @@ const handleRegister = async () => {
           <Typography variant="body2" sx={{ color: 'text.secondary' }}> Fulfill the blank below to create an account </Typography>
           <>
       <Stack spacing={3}>
-        <TextField name="name" onChange={ (e) => setUserName(e.target.value)} label="Name" />
-        <TextField name="surname" onChange={ (e) => setUserSurname(e.target.value)} label="Surname" />
+        <TextField name="firstname" onChange={ (e) => setUserFirstName(e.target.value)} label="Name" />
+        <TextField name="lastname" onChange={ (e) => setUserLastName(e.target.value)} label="Surname" />
         <TextField name="email" onChange={ (e) => setUserEmail(e.target.value)} label="Email address" />
 
         <TextField 
@@ -155,13 +172,6 @@ const handleRegister = async () => {
 
       </Stack>
 
-      {/* <Stack direction="row" alignItems="center" justifyContent="flex-end" sx={{ my: 3 }}>
-        <Link variant="subtitle2" underline="hover">
-          Register
-        </Link>
-      </Stack> */}
-
-      {/* <br /> */}
 
 
       <LoadingButton

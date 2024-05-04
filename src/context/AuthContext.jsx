@@ -22,7 +22,7 @@ export default function Index({ children }) {
       console.log("Auth userdata", userData);
   
       const _session = {
-        user: userData.data.data
+        user: userData.data
       };
   
       setSession(_session);
@@ -38,10 +38,10 @@ export default function Index({ children }) {
 
   useEffect(() => {
     // Check if there is data in local storage
-    const token = localStorage.getItem("token");
-    if (token) {
+    const accessToken = localStorage.getItem("accessToken");
+    if (accessToken) {
 
-      fetchDataAndSetSession(token);
+      fetchDataAndSetSession(accessToken);
 
     }
   }, []);
