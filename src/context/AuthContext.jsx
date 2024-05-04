@@ -11,7 +11,7 @@ export default function Index({ children }) {
   async function fetchDataAndSetSession(token) {
     try {
       const userData = await axios.get(
-        'https://express-app-1.up.railway.app/api/v1/users/account',
+        'https://java-api-production.up.railway.app/users/account',
         {
           headers: {
             authorization: token,
