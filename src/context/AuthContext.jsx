@@ -8,13 +8,13 @@ export default function Index({ children }) {
   // State and useEffect usage here
   const [session, setSession] = useState(null);
 
-  async function fetchDataAndSetSession(token) {
+  async function fetchDataAndSetSession(accessToken) {
     try {
       const userData = await axios.get(
         'https://java-api-production.up.railway.app/users/account',
         {
           headers: {
-            authorization: token,
+            authorization: accessToken,
           },
         }
       );
