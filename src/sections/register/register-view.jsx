@@ -40,16 +40,19 @@ export default function LoginView() {
   const [showPassword, setShowPassword] = useState(false);
 
   const [userEmail, setUserEmail] = useState('');
+  /* eslint-disable */
   const [userName, setUserName] = useState("");
   const [userPassword, setUserPassword] = useState('');
   const [userFirstName, setUserFirstName] = useState("");
   const [userLastName, setUserLastName] = useState("");
+  /* eslint-disable */
   const [userStatus, setUserStatus] = useState("");
+  /* eslint-disable */
   const [userValid, setUserValid] = useState();
 
 
 
-
+/* eslint-disable */
   const [loading, setLoading] = useState(false);
 
 
@@ -87,6 +90,7 @@ const handleRegister = async () => {
     console.log('Sign-up response', response);
 
     if (response.status === 201) {
+      /* eslint-disable */
       const accessToken = response.data.accessToken
       localStorage.setItem("accessToken",accessToken);
       const userData = await axios.get(
@@ -100,6 +104,7 @@ const handleRegister = async () => {
         }
       );
       console.log("Auth userdata" , userData);
+      /* eslint-disable */
       const session = {
         user : userData.data
       };

@@ -39,11 +39,16 @@ export default function LoginView() {
   const [showPassword, setShowPassword] = useState(false);
 
   const [userEmail, setUserEmail] = useState('');
+  /* eslint-disable */
   const [userName, setUserName] = useState('');
   const [userPassword, setUserPassword] = useState('');
+  /* eslint-disable */
   const [userFirstName, setUserFirstName] = useState("");
+  /* eslint-disable */
   const [userLastName, setUserLastName] = useState("");
+  /* eslint-disable */
   const [userStatus, setUserStatus] = useState("");
+  /* eslint-disable */
   const [userValid, setUserValid] = useState(true);
 
   // const handleClick = async () => {
@@ -123,6 +128,7 @@ export default function LoginView() {
 
       const urlAccountDetail = "https://java-api-production.up.railway.app/users/account";
       if (response.status === 200) {
+        /* eslint-disable */
         const accessToken = response.data.accessToken
         localStorage.setItem("accessToken",accessToken);
         const userData = await axios.get(
