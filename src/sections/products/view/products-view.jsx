@@ -22,7 +22,8 @@ export default function ProductsView() {
   const [openFilter, setOpenFilter] = useState(false);
   const [products, setProducts] = useState({
     data : [],
-    metadata: []
+    metadata: [],
+ 
   })
 
 
@@ -35,19 +36,14 @@ export default function ProductsView() {
   };
 
 
-  // useEffect(() => {
-  //   axios.get('https://express-app-1.up.railway.app/api/v1/products')
-  //   .then(function (response) {
-  //     // handle success
-  //    setProducts(response.data);
-  //   });
-  // }, [])
+
   
 
   useEffect(() => {
-    axios.get('https://express-app-1.up.railway.app/api/v1/products')
+    axios.get('https://java-api-production.up.railway.app/products?page=1&size=24&sort=id')
     .then((response) => {
       // handle success
+      console.log("products response" , response.data);
      setProducts(response.data);
     });
   }, [])
@@ -73,7 +69,7 @@ export default function ProductsView() {
       </Stack>
 
       <Grid container spacing={3}>
-        {products.data.map((product) => (
+        {products.data && products.data.map((product) => (
           <Grid key={product.id} xs={12} sm={6} md={3}>
             <ProductCard product={product} />
           </Grid>
