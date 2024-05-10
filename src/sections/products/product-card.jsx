@@ -1,32 +1,35 @@
-import Stack from '@mui/material/Stack';
-import Container from '@mui/material/Container';
-import Grid from '@mui/material/Unstable_Grid2';
+import React from 'react';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
+import CardActions from '@mui/material/CardActions';
+import Button from '@mui/material/Button';
 
 
-export default function Component( props ) {
-
-  const receivedData = props.product;
-
-  console.log("Product card - ", receivedData );
-
+function ProductCard({ product }) {
   return (
+    <Card>
+      <CardActions>
+      <img src={product.image} alt="product image" style={{ width: '100%', marginTop: '10px' }} />
+      </CardActions>
+      <CardContent>
+        <Typography variant="h5" component="div">
+          {product.name}
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          Price: {product.price}
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          Description: {product.description}
+        </Typography>
+        <CardActions style={{ justifyContent: 'center' }}>
+        <Button size="medium" color="primary">Add to card</Button>
+      </CardActions>
 
-  
-    <Stack>
-    
-      <Container>
-
-          <Grid key={id} container spacing={3}>
-
-          <Typography> {receivedData.price ? receivedData.price : 'Price not available' }</Typography>
-
-          </Grid>
-
-        </Container>
-
-      </Stack>
-      
-
-  )
+      </CardContent>
+    </Card>
+  );
 }
+
+
+export default ProductCard;

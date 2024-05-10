@@ -51,47 +51,6 @@ export default function LoginView() {
   /* eslint-disable */
   const [userValid, setUserValid] = useState(true);
 
-  // const handleClick = async () => {
-  //   try {
-  //     // Perform an API request to authenticate the user
-  //     const response = await fetch('https://express-app-1.up.railway.app/api/v1/users/sign-in', {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json'
-  //       },
-  //       body: JSON.stringify({
-  //         email: userEmail,
-  //         password: userPassword
-  //       })
-  //     });
-
-  //     if (response.ok) {
-  //       // If authentication is successful, get user data from the response
-  //       const userData = await response.json();
-
-  //       // Save user data to session context
-  //       authContext.setSession(userData);
-
-  //       // Save user data to local storage
-  //       localStorage.setSession('userData', JSON.stringify(userData));
-
-  //       // Navigate to the dashboard or product page
-  //       navigate('/dashboard');
-  //     } else {
-  //       // Handle authentication failure (e.g., show an error message)
-  //       console.error('Authentication failed');
-  //     }
-  //   } catch (error) {
-  //     console.error('Error occurred during authentication:', error);
-  //   }
-  // };
-
-
-
-  // --------------------------------------- first URL done here ----------------------------------------------------
-
-
-  // --------------------------------------- new URL starts here ---------------------------------------------------
 
   const handleClick = async () => {
     try {
