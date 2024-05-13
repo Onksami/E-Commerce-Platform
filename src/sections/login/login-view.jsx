@@ -1,3 +1,4 @@
+  /* eslint-disable */
 import axios from 'axios';
 import { useState, useContext } from 'react';
 // import { Navigate } from 'react-router-dom';
@@ -55,122 +56,64 @@ export default function LoginView() {
   const handleClick = async () => {
     try {
       // Perform an API request to authenticate the user
-
-
-      const urlSignIn = 'https://java-api-production.up.railway.app/auth/login';
       const headers = {
         'accept': '*/*',
         'Content-Type': 'application/json'
       };
-
+  
       const data = {
         email: userEmail,
-        
-
         password: userPassword,
-
         firstName: userFirstName,
-
         lastName: userLastName,
-
-  
-
       }; // Gather user input data
+  
       // Make POST request to the API
       const response = await axios.post(
-        urlSignIn,
+        'https://java-api-production.up.railway.app/auth/login',
         data,
         { headers },
       );
-
+  
       console.log('Sign-in response', response);
-
-      const urlAccountDetail = "https://java-api-production.up.railway.app/users/account";
+  
       if (response.status === 200) {
-        /* eslint-disable */
         const accessToken = response.data.accessToken
-        localStorage.setItem("accessToken",accessToken);
+        localStorage.setItem("accessToken", accessToken);
+  
+        // Fetch user data
         const userData = await axios.get(
-          urlAccountDetail,
+          "https://java-api-production.up.railway.app/users/account",
           {
             headers: {
               Authorization: accessToken,
-            }, 
-
-
+            },
           }
         );
-        console.log("Auth userdata" , userData);
-        const session = {
-          user : userData.data
-        };
+        
+        console.log("Auth userdata", userData);
+  
+        // Check if the user is an admin
+        const isAdmin = userData.data.roles.some(role => role.name === 'ADMIN');
 
-        authContext.setSession(session);
-        navigate('/products');
-
+        console.log("is Admin", isAdmin);
+  
+        if (isAdmin) {
+          // Redirect to admin dashboard or perform admin actions
+          navigate('/admin-dashboard');
+        } else {
+          // Regular user, redirect to products page
+          const session = {
+            user: userData.data
+          };
+          authContext.setSession(session);
+          navigate('/products');
+        }
       }
     } catch (error) {
       console.error('Error occurred during authentication:', error);
     }
   };
-
-
-
-  // try for fetch
-
-  // const handleClick = async () => {
-  //   try {
-  //     const urlSignIn = 'https://java-api-production.up.railway.app/auth/login';
-  //     const headers = {
-  //       'accept': '*/*',
-  //       'Content-Type': 'application/json'
-  //     };
-  
-  //     const data = {
-  //       email: userEmail,
-  //       password: userPassword,
-  //       firstName: userFirstName,
-  //       lastName: userLastName,
-  //       status: userStatus,
-  //       valid: userValid,
-  //     };
-  
-  //     // Make POST request to the API
-  //     const signInResponse = await fetch(urlSignIn, {
-  //       method: 'POST',
-  //       headers: headers,
-  //       body: JSON.stringify(data)
-  //     });
-  
-  //     if (signInResponse.status === 200) {
-  //       const signInData = await signInResponse.json();
-  //       const token = signInData.token;
-  //       localStorage.setItem("token", token);
-  
-  //       const urlAccountDetail = "https://express-app-1.up.railway.app/api/v1/users/account";
-  //       const accountDetailResponse = await fetch(urlAccountDetail, {
-  //         headers: {
-  //           authorization: token
-  //         }
-  //       });
-  
-  //       if (accountDetailResponse.ok) {
-  //         const accountDetailData = await accountDetailResponse.json();
-  //         const session = {
-  //           user: accountDetailData.data
-  //         };
-  //         authContext.setSession(session);
-  //         navigate('/products');
-  //       } else {
-  //         console.error('Failed to fetch account details:', accountDetailResponse.status);
-  //       }
-  //     } else {
-  //       console.error('Failed to sign in:', signInResponse.status);
-  //     }
-  //   } catch (error) {
-  //     console.error('Error occurred during authentication:', error);
-  //   }
-  // };
 
 
 
