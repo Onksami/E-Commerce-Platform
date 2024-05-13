@@ -96,6 +96,7 @@ export default function Nav({ openNav, onCloseNav }) {
     {navConfig.map((item) => (
       // Check if the item is "Log-in" or "Sign-in" and if the user is logged in
       (item.title === 'login' || item.title === 'register') && session ? null : (
+        
         <NavItem key={item.title} item={item} />
       )
     ))}
