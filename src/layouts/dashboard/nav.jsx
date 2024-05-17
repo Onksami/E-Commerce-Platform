@@ -24,11 +24,7 @@ import { AuthContext } from '../../context/AuthContext';
 // ----------------------------------------------------------------------
 
 
-// const account = {
-//   displayName: 'Test Test.',
-//   email: 'test.test@gmail.com',
-//   photoURL: '/assets/images/avatars/avatar_25.jpg',
-// };
+
 
 
 
@@ -39,11 +35,13 @@ export default function Nav({ openNav, onCloseNav }) {
   
   const authContext = useContext(AuthContext);
 
-  const {session} = authContext;
+  const {session, isAdmin} = authContext;
 
   // const session =authContext.session;
 
   console.log("Navbar Session", session);
+
+  console.log("Navbar isAdmin", isAdmin);
 
 
 
@@ -91,17 +89,16 @@ export default function Nav({ openNav, onCloseNav }) {
     </Box>
   );
 
-  const renderMenu = (
-    <Stack component="nav" spacing={0.5} sx={{ px: 2 }}>
+const renderMenu = (
+  <Stack component="nav" spacing={0.5} sx={{ px: 2 }}>
     {navConfig.map((item) => (
       // Check if the item is "Log-in" or "Sign-in" and if the user is logged in
-      (item.title === 'login' || item.title === 'register') && session ? null : (
-        
-        <NavItem key={item.title} item={item} />
+      /*eslint-disable */
+      (item.title === 'login' || item.title === 'register') && session ? null : <NavItem key={item.title} item={item} />
       )
-    ))}
+    )}
   </Stack>
-  );
+);
 
 
 

@@ -1,4 +1,4 @@
-  /* eslint-disable */
+/* eslint-disable */
 import axios from 'axios';
 import { useState, useContext } from 'react';
 // import { Navigate } from 'react-router-dom';
@@ -44,82 +44,72 @@ export default function LoginView() {
   const [userName, setUserName] = useState('');
   const [userPassword, setUserPassword] = useState('');
   /* eslint-disable */
-  const [userFirstName, setUserFirstName] = useState("");
+  const [userFirstName, setUserFirstName] = useState('');
   /* eslint-disable */
-  const [userLastName, setUserLastName] = useState("");
+  const [userLastName, setUserLastName] = useState('');
   /* eslint-disable */
-  const [userStatus, setUserStatus] = useState("");
+  const [userStatus, setUserStatus] = useState('');
   /* eslint-disable */
   const [userValid, setUserValid] = useState(true);
-
 
   const handleClick = async () => {
     try {
       // Perform an API request to authenticate the user
       const headers = {
-        'accept': '*/*',
-        'Content-Type': 'application/json'
+        accept: '*/*',
+        'Content-Type': 'application/json',
       };
-  
+
       const data = {
         email: userEmail,
         password: userPassword,
         firstName: userFirstName,
         lastName: userLastName,
       }; // Gather user input data
-  
+
       // Make POST request to the API
       const response = await axios.post(
         'https://java-api-production.up.railway.app/auth/login',
         data,
-        { headers },
+        { headers }
       );
-  
+
       console.log('Sign-in response', response);
-  
+
       if (response.status === 200) {
-        const accessToken = response.data.accessToken
-        localStorage.setItem("accessToken", accessToken);
-  
+        const accessToken = response.data.accessToken;
+        localStorage.setItem('accessToken', accessToken);
+
         // Fetch user data
         const userData = await axios.get(
-          "https://java-api-production.up.railway.app/users/account",
+          'https://java-api-production.up.railway.app/users/account',
           {
             headers: {
               Authorization: accessToken,
             },
           }
         );
-        
-        console.log("Auth userdata", userData);
-  
-        // Check if the user is an admin
-        const isAdmin = userData.data.roles.some(role => role.name === 'ADMIN');
 
-        console.log("is Admin", isAdmin);
-  
-        if (isAdmin) {
-          // Redirect to admin dashboard or perform admin actions
-          navigate('/admin-dashboard');
-        } else {
-          // Regular user, redirect to products page
-          const session = {
-            user: userData.data
-          };
-          authContext.setSession(session);
-          navigate('/products');
-        }
+        console.log('Auth userdata', userData);
+
+        // Check if the user is an admin
+        const isAdmin = userData.data.roles.some((role) => role.name === 'ADMIN');
+
+        console.log('is Admin', isAdmin);
+
+        // Regular user, redirect to products page
+        const session = {
+          user: userData.data,
+        };
+        authContext.setSession(session);
+
+        isAdmin == true ? navigate('/') : navigate('/products');
       }
     } catch (error) {
       console.error('Error occurred during authentication:', error);
     }
   };
 
-
-
-
-
-  
   const handleCreateAccountClick = () => {
     // Navigate to the create account page
     navigate('/register');

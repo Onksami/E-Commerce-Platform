@@ -7,6 +7,8 @@ export const AuthContext = React.createContext();
 export default function Index({ children }) {
   // State and useEffect usage here
   const [session, setSession] = useState(null);
+  const [isAdmin, setIsAdmin] = useState(false);
+
 
   async function fetchDataAndSetSession(accessToken) {
     try {
@@ -26,6 +28,12 @@ export default function Index({ children }) {
       };
   
       setSession(_session);
+      const isAdmin = userData.data.roles.some(role => role.name === 'ADMIN');
+      if (isAdmin === true) {
+        setIsAdmin (true);
+      }
+
+
     } catch (error) {
       console.error('Error fetching user data:', error);
       // Handle error here
@@ -48,19 +56,18 @@ export default function Index({ children }) {
 
 
 
-  // Check if session is null
-  useEffect(() => {
-    if (session === null) {
-      console.log("user is not logged in");
-    }
-  }, [session]);
+
 
   // Memoize the value using useMemo
   const contextValue = useMemo(() => ({
     session,
     setSession,
+    isAdmin,
+    setIsAdmin,
 
-  }), [session]);
+    
+
+  }), [session, isAdmin]);
 
   return (
     <AuthContext.Provider value={contextValue}>
