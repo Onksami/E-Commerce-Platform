@@ -28,6 +28,7 @@ export default function Index({ children }) {
       };
   
       setSession(_session);
+      /* eslint-disable */
       const isAdmin = userData.data.roles.some(role => role.name === 'ADMIN');
       if (isAdmin === true) {
         setIsAdmin (true);

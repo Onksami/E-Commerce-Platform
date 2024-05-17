@@ -88,14 +88,30 @@ export default function Nav({ openNav, onCloseNav }) {
       </Box>
     </Box>
   );
-
-const renderMenu = (
+/* eslint-disable */
+const renderMenu1 = (
   <Stack component="nav" spacing={0.5} sx={{ px: 2 }}>
     {navConfig.map((item) => (
       // Check if the item is "Log-in" or "Sign-in" and if the user is logged in
       /*eslint-disable */
-      (item.title === 'login' || item.title === 'register') && session ? null : <NavItem key={item.title} item={item} />
+      (item.title === 'login' || item.title === 'register') && session ? null : isAdmin == true ? "" :  <NavItem key={item.title} item={item} />
       )
+    )}
+  </Stack>
+);
+
+const renderMenu = (
+  <Stack component="nav" spacing={0.5} sx={{ px: 2 }}>
+    {navConfig.map((item) => {
+      if ((item.title === 'login' || item.title === 'register') && session){
+        return null
+      }
+      if(isAdmin !== true &&  (item.title == "dashboard" ||  item.title == "user") ){
+        return null
+      } 
+      return <NavItem key={item.title} item={item} />
+
+    }
     )}
   </Stack>
 );
