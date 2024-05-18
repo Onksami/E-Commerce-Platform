@@ -30,8 +30,11 @@ export default function Index({ children }) {
       setSession(_session);
       /* eslint-disable */
       const isAdmin = userData.data.roles.some(role => role.name === 'ADMIN');
-      if (isAdmin === true) {
+      if (isAdmin) { // if is accepted true directly.
         setIsAdmin (true);
+        console.log("Context isAdmin " , isAdmin);
+      } else {
+        console.error("userData is not properly defined or roles is not an array");
       }
 
 

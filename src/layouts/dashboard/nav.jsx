@@ -35,7 +35,9 @@ export default function Nav({ openNav, onCloseNav }) {
   
   const authContext = useContext(AuthContext);
 
-  const {session, isAdmin} = authContext;
+  const {session} = authContext;
+  /*eslint-disable*/
+  const isAdmin = authContext.isAdmin;
 
   // const session =authContext.session;
 
