@@ -69,7 +69,7 @@ export default function LoginView() {
 
       // Make POST request to the API
       const response = await axios.post(
-        'https://java-api-production.up.railway.app/auth/login',
+        'https://shopping-app-be.onrender.com/auth/login',
         data,
         { headers }
       );
@@ -82,7 +82,7 @@ export default function LoginView() {
 
         // Fetch user data
         const userData = await axios.get(
-          'https://java-api-production.up.railway.app/users/account',
+          'https://shopping-app-be.onrender.com/users/account',
           {
             headers: {
               Authorization: accessToken,
@@ -93,9 +93,15 @@ export default function LoginView() {
         console.log('Auth userdata', userData);
 
         // Check if the user is an admin
-        const isAdmin = userData.data.roles.some((role) => role.name === 'ADMIN');
+        // const isAdmin = userData.data.roles.some((role) => role.name === 'ADMIN');
+
+        const isAdmin = userData.data.roles.filter((role) => role.name === 'ADMIN').length > 0;
+        
 
         console.log('is Admin', isAdmin);
+
+        authContext.setIsAdmin(isAdmin);
+
 
         // Regular user, redirect to products page
         const session = {
@@ -103,12 +109,18 @@ export default function LoginView() {
         };
         authContext.setSession(session);
 
-        isAdmin == true ? navigate('/') : navigate('/products');
+        isAdmin === true ? navigate('/') : navigate('/products');
+
+        // isAdmin ? navigate('/') : navigate('/products');
+        
       }
     } catch (error) {
       console.error('Error occurred during authentication:', error);
     }
   };
+
+
+
 
   const handleCreateAccountClick = () => {
     // Navigate to the create account page

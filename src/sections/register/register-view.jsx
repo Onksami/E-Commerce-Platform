@@ -64,7 +64,7 @@ const handleRegister = async () => {
   try {
     // Perform an API request to authenticate the user
 
-    const urlSignUp = 'https://java-api-production.up.railway.app/auth/register';
+    const urlSignUp = 'https://shopping-app-be.onrender.com/auth/register';
     const headers = {
       'accept': '*/*',
       'Content-Type': 'application/json'
@@ -95,7 +95,7 @@ const handleRegister = async () => {
       const accessToken = response.data.accessToken
       localStorage.setItem("accessToken",accessToken);
       const userData = await axios.get(
-        'https://java-api-production.up.railway.app/users/account',
+        'https://shopping-app-be.onrender.com/users/account',
         {
           headers: {
             Authorization: accessToken,

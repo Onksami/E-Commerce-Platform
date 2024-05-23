@@ -35,15 +35,14 @@ export default function Nav({ openNav, onCloseNav }) {
   
   const authContext = useContext(AuthContext);
 
-  const {session} = authContext;
-  /*eslint-disable*/
-  const isAdmin = authContext.isAdmin;
+  const {session, isAdmin} = authContext;
+
 
   // const session =authContext.session;
 
-  console.log("Navbar Session", session);
+  // console.log("Navbar Session", session);
 
-  console.log("Navbar isAdmin", isAdmin);
+  // console.log("Navbar isAdmin", isAdmin);
 
 
 
@@ -102,23 +101,66 @@ const renderMenu1 = (
   </Stack>
 );
 
+// const renderMenu = (
+//   <Stack component="nav" spacing={0.5} sx={{ px: 2 }}>
+//     {navConfig.map((item) => {
+//       if ((item.title === 'login' || item.title === 'register') && session){
+//         return null
+//       }
+//       if(isAdmin == true &&  (item.title == "dashboard" ||  item.title == "user") ){
+//         return null
+//       } 
+//       return <NavItem key={item.title} item={item} />
+
+//     }
+//     )}
+//   </Stack>
+// );
+
+
+
+
 const renderMenu = (
   <Stack component="nav" spacing={0.5} sx={{ px: 2 }}>
     {navConfig.map((item) => {
-      if ((item.title === 'login' || item.title === 'register') && session){
-        return null
+  // Kullanıcı login değilse, sadece "login", "register", "blog" ve "not found" elementlerini render et
+      if (!session) {
+        if (['login', 'register', 'blog', 'not found'].includes(item.title)) {
+          return <NavItem key={item.title} item={item} />;
+        }
+        return null;
       }
-      if(isAdmin !== true &&  (item.title == "dashboard" ||  item.title == "user") ){
-        return null
-      } 
-      return <NavItem key={item.title} item={item} />
+  // Kullanıcı login ise ve data.roles = "ADMIN" ise, sadece "login" ve "register" elementlerini render etme
+      if (isAdmin) {
+        if (['login', 'register'].includes(item.title)) {
+          return null;
+        }
+        return <NavItem key={item.title} item={item} />;
+      }
 
-    }
-    )}
+
+    // "login" ve "register" elementlerini render etme
+      if (!isAdmin) {
+        if (['login', 'register', "dashboard", "user"].includes(item.title)) {
+          return null; 
+        }
+        return <NavItem key={item.title} item={item} />;
+      }
+      // Yukarıdaki koşullardan hiçbirine uymuyorsa, öğeyi render et
+      return <NavItem key={item.title} item={item} />;
+    })}
   </Stack>
 );
 
 
+
+
+
+
+
+
+
+// --------------------------- 
 
   const renderContent = (
     <Scrollbar

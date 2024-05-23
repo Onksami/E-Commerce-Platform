@@ -32,7 +32,7 @@ export default function ProductsView() {
 
   useEffect(() => {
     axios
-      .get('https://java-api-production.up.railway.app/products?page=1&size=24&sort=id')
+      .get('https://shopping-app-be.onrender.com/products?page=1&size=24&sort=id')
       .then((response) => {
         // handle success
         console.log('products response', response.data);
@@ -47,7 +47,7 @@ export default function ProductsView() {
       });
   }, []);
 
-  console.log("what is data now ? " , products.data);
+  // console.log("what is data now ? " , products.data);
 
   return (
     <Container>

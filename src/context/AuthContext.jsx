@@ -31,7 +31,7 @@ export default function Index({ children }) {
       /* eslint-disable */
       const isAdmin = userData.data.roles.some(role => role.name === 'ADMIN');
       if (isAdmin) { // if is accepted true directly.
-        setIsAdmin (true);
+        setIsAdmin (isAdmin);
         console.log("Context isAdmin " , isAdmin);
       } else {
         console.error("userData is not properly defined or roles is not an array");
