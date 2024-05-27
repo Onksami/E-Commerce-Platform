@@ -80,6 +80,7 @@ export default function LoginView() {
         const accessToken = response.data.accessToken;
         localStorage.setItem('accessToken', accessToken);
 
+
         // Fetch user data
         const userData = await axios.get(
           'https://shopping-app-be.onrender.com/users/account',
@@ -111,6 +112,7 @@ export default function LoginView() {
 
         isAdmin === true ? navigate('/') : navigate('/products');
 
+
         // isAdmin ? navigate('/') : navigate('/products');
         
       }
@@ -126,6 +128,12 @@ export default function LoginView() {
     // Navigate to the create account page
     navigate('/register');
   };
+
+
+
+
+
+
 
   const renderForm = (
     <>

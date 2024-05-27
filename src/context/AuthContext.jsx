@@ -13,7 +13,7 @@ export default function Index({ children }) {
   async function fetchDataAndSetSession(accessToken) {
     try {
       const userData = await axios.get(
-        'https://java-api-production.up.railway.app/users/account',
+        'https://shopping-app-be.onrender.com/users/account',
         {
           headers: {
             authorization: accessToken,
