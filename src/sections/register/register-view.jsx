@@ -2,6 +2,9 @@
 import { useState, useContext } from 'react';
 import { useNavigate } from "react-router-dom";
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
@@ -112,10 +115,12 @@ const handleRegister = async () => {
 
       authContext.setSession(session);
       navigate('/products');
+      toast.success('Welcome!');
 
     }
   } catch (error) {
     console.error('Error occurred during authentication:', error);
+    toast.error('Something went wrong! ');
   }
 };
 
@@ -123,6 +128,7 @@ const handleRegister = async () => {
 
   return (
     <Box sx={{...bgGradient({ color: alpha(theme.palette.background.default, 0.9), imgUrl: '/assets/background/overlay_4.jpg', }), height: 1, }} >
+         <ToastContainer />
       <Logo sx={{ position: 'fixed', top: { xs: 16, md: 24 }, left: { xs: 16, md: 24 }, }} />
 
       <Stack alignItems="center" justifyContent="center" sx={{ height: 1 }}>

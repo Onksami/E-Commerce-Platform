@@ -4,6 +4,9 @@ import { useState, useContext } from 'react';
 // import { Navigate } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
 import Card from '@mui/material/Card';
@@ -31,8 +34,9 @@ import { AuthContext } from '../../context/AuthContext';
 export default function LoginView() {
   const authContext = useContext(AuthContext);
 
-  const navigate = useNavigate(); // useNavigate kancasını kullanarak navigate fonksiyonunu tanımlayın
+  const navigate = useNavigate(); 
   const theme = useTheme();
+
 
   // eslint-disable-next-line no-unused-vars
   const router = useRouter();
@@ -40,17 +44,14 @@ export default function LoginView() {
   const [showPassword, setShowPassword] = useState(false);
 
   const [userEmail, setUserEmail] = useState('');
-  /* eslint-disable */
-  const [userName, setUserName] = useState('');
+
   const [userPassword, setUserPassword] = useState('');
   /* eslint-disable */
   const [userFirstName, setUserFirstName] = useState('');
   /* eslint-disable */
   const [userLastName, setUserLastName] = useState('');
-  /* eslint-disable */
-  const [userStatus, setUserStatus] = useState('');
-  /* eslint-disable */
-  const [userValid, setUserValid] = useState(true);
+
+
 
   const handleClick = async () => {
     try {
@@ -112,12 +113,13 @@ export default function LoginView() {
 
         isAdmin === true ? navigate('/') : navigate('/products');
 
-
-        // isAdmin ? navigate('/') : navigate('/products');
+        toast.success('Welcome back!');
+     
         
       }
     } catch (error) {
-      console.error('Error occurred during authentication:', error);
+      console.error('Error occurred during authentication: username or password error', error);
+      toast.error('Something went wrong! ');
     }
   };
 
@@ -190,6 +192,7 @@ export default function LoginView() {
         height: 1,
       }}
     >
+        <ToastContainer />
       <Logo
         sx={{
           position: 'fixed',

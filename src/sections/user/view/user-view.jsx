@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import axios from 'axios';
+import { useState, useEffect, useContext } from 'react';
 
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
@@ -10,7 +11,7 @@ import Typography from '@mui/material/Typography';
 import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
 
-import { users } from 'src/_mock/user';
+// import { users } from 'src/_mock/user';
 
 import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
@@ -20,11 +21,115 @@ import UserTableRow from '../user-table-row';
 import UserTableHead from '../user-table-head';
 import TableEmptyRows from '../table-empty-rows';
 import UserTableToolbar from '../user-table-toolbar';
+import { AuthContext } from '../../../context/AuthContext';
 import { emptyRows, applyFilter, getComparator } from '../utils';
 
 // ----------------------------------------------------------------------
 
 export default function UserPage() {
+
+  const authContext = useContext(AuthContext);
+
+  console.log("User view authContext data" , authContext.isAdmin);
+
+  const contextIsAdmin = authContext.isAdmin;
+  console.log("contextIsadmin ??" , contextIsAdmin );
+
+
+  // ---------------------------------------------------- 
+
+  // const [users, setUsers] = useState([
+  //   {
+  //     "id": 1,
+  //     "avatarId": 0,
+  //     "email": "admin@admin.com",
+  //     "userName": "admin@admin.com",
+  //     "firstName": "kamil",
+  //     "lastName": "can",
+  //     "country": null,
+  //     "city": null,
+  //     "phone": null,
+  //     "status": "active",
+  //     "profession": null,
+  //     "roles": [
+  //       {
+  //         "id": 2,
+  //         "name": "ADMIN"
+  //       }
+  //     ]
+  //   },
+  //   {
+  //     "id": 2,
+  //     "avatarId": 0,
+  //     "email": "realronaldo@fakemail.com",
+  //     "userName": "realronaldo@fakemail.com",
+  //     "firstName": "real",
+  //     "lastName": "ronaldo",
+  //     "country": null,
+  //     "city": null,
+  //     "phone": null,
+  //     "status": "active",
+  //     "profession": null,
+  //     "roles": [
+  //       {
+  //         "id": 1,
+  //         "name": "USER"
+  //       }
+  //     ]
+  //   },
+  //   {
+  //     "id": 3,
+  //     "avatarId": 0,
+  //     "email": "test@test.com",
+  //     "userName": "test@test.com",
+  //     "firstName": "test",
+  //     "lastName": "test",
+  //     "country": null,
+  //     "city": null,
+  //     "phone": null,
+  //     "status": "active",
+  //     "profession": null,
+  //     "roles": [
+  //       {
+  //         "id": 1,
+  //         "name": "USER"
+  //       }
+  //     ]
+  //   },
+  //   {
+  //     "id": 5,
+  //     "avatarId": 0,
+  //     "email": "realronaldo1@fakemail.com",
+  //     "userName": "realronaldo1@fakemail.com",
+  //     "firstName": "real",
+  //     "lastName": "ronaldo",
+  //     "country": null,
+  //     "city": null,
+  //     "phone": null,
+  //     "status": "active",
+  //     "profession": null,
+  //     "roles": [
+  //       {
+  //         "id": 1,
+  //         "name": "USER"
+  //       }
+  //     ]
+  //   }
+  // ])
+
+
+// ---------------------------------------------------- 
+
+
+
+// ----------------------------------------------------------------------
+
+
+
+const [users, setUsers] = useState([]);
+
+// ----------------------------------------------------------------------
+
   const [page, setPage] = useState(0);
 
   const [order, setOrder] = useState('asc');
@@ -36,6 +141,29 @@ export default function UserPage() {
   const [filterName, setFilterName] = useState('');
 
   const [rowsPerPage, setRowsPerPage] = useState(10);
+ /*eslint-disable */ 
+  const [loading, setLoading] = useState(true); // State to track loading
+
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await axios.get('https://shopping-app-be.onrender.com/admin/users');
+        setUsers(response.data);
+        console.log("response from users request" , response);
+      } catch (error) {
+        console.error('Error fetching users:', error);
+      }
+    };
+
+    fetchUsers();
+  }, []);
+
+
+
+
+
+
 
   const handleSort = (event, id) => {
     const isAsc = orderBy === id && order === 'asc';
@@ -94,6 +222,12 @@ export default function UserPage() {
 
   const notFound = !dataFiltered.length && !!filterName;
 
+  if (loading) {
+    return <div>Loading...</div>; // You can replace this with a spinner or a loading component
+  }
+
+
+
   return (
     <Container>
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
@@ -136,8 +270,9 @@ export default function UserPage() {
                   .map((row) => (
                     <UserTableRow
                       key={row.id}
-                      name={row.name}
-                      role={row.role}
+                      /*eslint-disable */
+                      name={row.firstName + " " + row.lastName}
+                      role={row.roles[0].name}
                       status={row.status}
                       company={row.company}
                       avatarUrl={row.avatarUrl}
