@@ -118,7 +118,7 @@ export default function LoginView() {
         
       }
     } catch (error) {
-      console.error('Error occurred during authentication: username or password error', error);
+      console.error('Error occurred during authentication: ', error);
       toast.error('Something went wrong! ');
     }
   };

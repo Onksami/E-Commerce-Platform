@@ -12,6 +12,10 @@ import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
 
 // import { users } from 'src/_mock/user';
+// import Loading from 'src/_mock/loading'; (couldnt apply)
+// import { Audio } from 'react-loader-spinner'
+
+import { OrbitProgress } from 'react-loading-indicators';
 
 import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
@@ -27,16 +31,14 @@ import { emptyRows, applyFilter, getComparator } from '../utils';
 // ----------------------------------------------------------------------
 
 export default function UserPage() {
-
   const authContext = useContext(AuthContext);
 
-  console.log("User view authContext data" , authContext.isAdmin);
+  console.log('User view authContext data', authContext.isAdmin);
 
   const contextIsAdmin = authContext.isAdmin;
-  console.log("contextIsadmin ??" , contextIsAdmin );
+  console.log('contextIsadmin ??', contextIsAdmin);
 
-
-  // ---------------------------------------------------- 
+  // ----------------------------------------------------
 
   // const [users, setUsers] = useState([
   //   {
@@ -117,18 +119,13 @@ export default function UserPage() {
   //   }
   // ])
 
+  // ----------------------------------------------------
 
-// ---------------------------------------------------- 
+  // ----------------------------------------------------------------------
 
+  const [users, setUsers] = useState([]);
 
-
-// ----------------------------------------------------------------------
-
-
-
-const [users, setUsers] = useState([]);
-
-// ----------------------------------------------------------------------
+  // ----------------------------------------------------------------------
 
   const [page, setPage] = useState(0);
 
@@ -141,26 +138,70 @@ const [users, setUsers] = useState([]);
   const [filterName, setFilterName] = useState('');
 
   const [rowsPerPage, setRowsPerPage] = useState(10);
- /*eslint-disable */ 
+  /*eslint-disable */
   const [loading, setLoading] = useState(true); // State to track loading
+  const [error, setError] = useState(null);
 
+  // useEffect(() => {
+  //   const fetchUsers = async () => {
+  //     try {
+  //       const response = await axios.get('https://shopping-app-be.onrender.com/admin/users');
+  //       setUsers(response.data);
+  //       console.log("response from users request" , response);
+  //     } catch (error) {
+  //       console.error('Error fetching users:', error);
+  //     }
+  //   };
+
+  //   fetchUsers();
+  // }, []);
+
+  
 
   useEffect(() => {
-    const fetchUsers = async () => {
+    const fetchData = async () => {
       try {
         const response = await axios.get('https://shopping-app-be.onrender.com/admin/users');
         setUsers(response.data);
-        console.log("response from users request" , response);
       } catch (error) {
         console.error('Error fetching users:', error);
       }
     };
 
-    fetchUsers();
+    fetchData();
+
+    // Clean up function to cancel any pending requests or cleanup when component unmounts
+    return () => {
+      // Any cleanup code can go here
+    };
   }, []);
 
 
+  // ------------------------------------------------------
 
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('https://shopping-app-be.onrender.com/admin/users', {
+          headers: {
+            'accept': '*/*',
+            'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzE3Mzk2Nzc2LCJleHAiOjE3MTczOTczODF9.PMV0IFMF7TB8cKOhsB1bC6fiEtkyBA6DfvSbAtBcbV7VW9KDFJxO08KMC0hk1Nt9FQom6ThkIIVjDtslpjJz4A'
+          }
+        });
+        setUsers(response.data);
+      } catch (error) {
+        console.error('Error fetching users:', error);
+      }
+    };
+
+    fetchData();
+
+    // Clean up function to cancel any pending requests or cleanup when component unmounts
+    return () => {
+      // Any cleanup code can go here
+    };
+  }, []);
 
 
 
@@ -223,10 +264,8 @@ const [users, setUsers] = useState([]);
   const notFound = !dataFiltered.length && !!filterName;
 
   if (loading) {
-    return <div>Loading...</div>; // You can replace this with a spinner or a loading component
+    return <OrbitProgress variant="track-disc" speedPlus="1" easing="linear" />;
   }
-
-
 
   return (
     <Container>
@@ -271,7 +310,7 @@ const [users, setUsers] = useState([]);
                     <UserTableRow
                       key={row.id}
                       /*eslint-disable */
-                      name={row.firstName + " " + row.lastName}
+                      name={row.firstName + ' ' + row.lastName}
                       role={row.roles[0].name}
                       status={row.status}
                       company={row.company}

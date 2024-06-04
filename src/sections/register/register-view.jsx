@@ -49,10 +49,8 @@ export default function LoginView() {
   const [userPassword, setUserPassword] = useState('');
   const [userFirstName, setUserFirstName] = useState("");
   const [userLastName, setUserLastName] = useState("");
-  /* eslint-disable */
-  const [userStatus, setUserStatus] = useState("");
-  /* eslint-disable */
-  const [userValid, setUserValid] = useState();
+  
+
 
 
 

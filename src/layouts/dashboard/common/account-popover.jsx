@@ -48,7 +48,7 @@ export default function AccountPopover() {
 
 
   const handleClose = (event) => {
-    localStorage.removeItem("token");
+    localStorage.removeItem("accessToken");
     authContext.setSession(null);
 
   };
