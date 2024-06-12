@@ -52,7 +52,6 @@ export default function LoginView() {
   const [userLastName, setUserLastName] = useState('');
 
 
-
   const handleClick = async () => {
     try {
       // Perform an API request to authenticate the user
@@ -79,7 +78,7 @@ export default function LoginView() {
 
       if (response.status === 200) {
         const accessToken = response.data.accessToken;
-        localStorage.setItem('accessToken', accessToken);
+        localStorage.setItem("accessToken", accessToken);
 
 
         // Fetch user data
@@ -130,6 +129,8 @@ export default function LoginView() {
     // Navigate to the create account page
     navigate('/register');
   };
+
+
 
 
 

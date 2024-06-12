@@ -15,6 +15,9 @@ import TablePagination from '@mui/material/TablePagination';
 // import Loading from 'src/_mock/loading'; (couldnt apply)
 // import { Audio } from 'react-loader-spinner'
 
+
+// eslint-disable-next-line import/no-extraneous-dependencies
+
 import { OrbitProgress } from 'react-loading-indicators';
 
 import Iconify from 'src/components/iconify';
@@ -28,6 +31,7 @@ import UserTableToolbar from '../user-table-toolbar';
 import { AuthContext } from '../../../context/AuthContext';
 import { emptyRows, applyFilter, getComparator } from '../utils';
 
+
 // ----------------------------------------------------------------------
 
 export default function UserPage() {
@@ -35,8 +39,7 @@ export default function UserPage() {
 
   console.log('User view authContext data', authContext.isAdmin);
 
-  const contextIsAdmin = authContext.isAdmin;
-  console.log('contextIsadmin ??', contextIsAdmin);
+ 
 
   // ----------------------------------------------------
 
@@ -123,7 +126,7 @@ export default function UserPage() {
 
   // ----------------------------------------------------------------------
 
-  const [users, setUsers] = useState([]);
+
 
   // ----------------------------------------------------------------------
 
@@ -142,66 +145,40 @@ export default function UserPage() {
   const [loading, setLoading] = useState(true); // State to track loading
   const [error, setError] = useState(null);
 
-  // useEffect(() => {
-  //   const fetchUsers = async () => {
-  //     try {
-  //       const response = await axios.get('https://shopping-app-be.onrender.com/admin/users');
-  //       setUsers(response.data);
-  //       console.log("response from users request" , response);
-  //     } catch (error) {
-  //       console.error('Error fetching users:', error);
-  //     }
-  //   };
-
-  //   fetchUsers();
-  // }, []);
-
-  
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get('https://shopping-app-be.onrender.com/admin/users');
-        setUsers(response.data);
-      } catch (error) {
-        console.error('Error fetching users:', error);
-      }
-    };
-
-    fetchData();
-
-    // Clean up function to cancel any pending requests or cleanup when component unmounts
-    return () => {
-      // Any cleanup code can go here
-    };
-  }, []);
+  const [users, setUsers] = useState([]);
+  const [isAdmin, setIsAdmin] = useState(false);
 
 
   // ------------------------------------------------------
 
-
   useEffect(() => {
-    const fetchData = async () => {
+
+const accessToken  = localStorage.getItem("accessToken")
+
+    const fetchUsers = async () => {
       try {
         const response = await axios.get('https://shopping-app-be.onrender.com/admin/users', {
           headers: {
-            'accept': '*/*',
-            'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzE3Mzk2Nzc2LCJleHAiOjE3MTczOTczODF9.PMV0IFMF7TB8cKOhsB1bC6fiEtkyBA6DfvSbAtBcbV7VW9KDFJxO08KMC0hk1Nt9FQom6ThkIIVjDtslpjJz4A'
-          }
-        });
+            Authorization: accessToken,
+          },
+        }); 
         setUsers(response.data);
       } catch (error) {
         console.error('Error fetching users:', error);
+      } finally {
+        setLoading(false);
       }
+      
     };
 
-    fetchData();
+   
+    fetchUsers();
 
-    // Clean up function to cancel any pending requests or cleanup when component unmounts
-    return () => {
-      // Any cleanup code can go here
-    };
-  }, []);
+
+  }, []); 
+
+
+
 
 
 
@@ -296,11 +273,16 @@ export default function UserPage() {
                 onSelectAllClick={handleSelectAllClick}
                 headLabel={[
                   { id: 'name', label: 'Name' },
+                  { id: 'phone', label: 'Phone' },
+                  { id: 'email', label: 'Email' },
+                  { id: 'city', label: 'City' },
+                  { id: 'country', label: 'Country' },
+                  { id: 'profession', label: 'Profession' },
                   { id: 'company', label: 'Company' },
                   { id: 'role', label: 'Role' },
-                  { id: 'isVerified', label: 'Verified', align: 'center' },
+                  { id: 'isVerified', label: 'Verified' },
                   { id: 'status', label: 'Status' },
-                  { id: '' },
+
                 ]}
               />
               <TableBody>
@@ -309,13 +291,16 @@ export default function UserPage() {
                   .map((row) => (
                     <UserTableRow
                       key={row.id}
-                      /*eslint-disable */
-                      name={row.firstName + ' ' + row.lastName}
+                      name={row.firstName + " " + row.lastName }
+                      phone={row.phone}
+                      email={row.email}
+                      city={row.city}
+                      country={row.country}
+                      profession={row.profession}         
+                      company={row.company }
                       role={row.roles[0].name}
-                      status={row.status}
-                      company={row.company}
-                      avatarUrl={row.avatarUrl}
                       isVerified={row.isVerified}
+                      status={row.status}
                       selected={selected.indexOf(row.name) !== -1}
                       handleClick={(event) => handleClick(event, row.name)}
                     />

@@ -19,12 +19,22 @@ import Iconify from 'src/components/iconify';
 export default function UserTableRow({
   selected,
   name,
-  avatarUrl,
   company,
+  profession,
   role,
-  isVerified,
+  phone,
+  email,
+  city,
+  country,
   status,
+  isVerified,
   handleClick,
+  avatarUrl,
+  userName,
+  firstName,
+  lastName,
+
+
 }) {
   const [open, setOpen] = useState(null);
 
@@ -47,20 +57,22 @@ export default function UserTableRow({
           <Stack direction="row" alignItems="center" spacing={2}>
             <Avatar alt={name} src={avatarUrl} />
             <Typography variant="subtitle2" noWrap>
-              {name}
+              {name} +
             </Typography>
           </Stack>
         </TableCell>
-
+        <TableCell>{phone}</TableCell>
+        <TableCell>{email}</TableCell>
+        <TableCell>{city}</TableCell>
+        <TableCell>{country}</TableCell>
+        <TableCell>{profession}</TableCell>
         <TableCell>{company}</TableCell>
-
         <TableCell>{role}</TableCell>
-
         <TableCell align="center">{isVerified ? 'Yes' : 'No'}</TableCell>
-
         <TableCell>
           <Label color={(status === 'banned' && 'error') || 'success'}>{status}</Label>
         </TableCell>
+
 
         <TableCell align="right">
           <IconButton onClick={handleOpenMenu}>
@@ -102,4 +114,13 @@ UserTableRow.propTypes = {
   role: PropTypes.any,
   selected: PropTypes.any,
   status: PropTypes.string,
+  city: PropTypes.string,
+  phone: PropTypes.string,
+  email: PropTypes.string,
+  userName: PropTypes.string,
+  firstName: PropTypes.string,
+  lastName: PropTypes.string,
+  country: PropTypes.string,
+  profession: PropTypes.string,
+
 };
