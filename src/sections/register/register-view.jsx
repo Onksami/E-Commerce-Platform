@@ -49,19 +49,42 @@ export default function LoginView() {
   const [userPassword, setUserPassword] = useState('');
   const [userFirstName, setUserFirstName] = useState("");
   const [userLastName, setUserLastName] = useState("");
-  
 
-
-
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [error, setError] = useState(false);
 
 /* eslint-disable */
   const [loading, setLoading] = useState(false);
 
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+    if (confirmPassword.length > 0) {
+      setError(e.target.value !== confirmPassword);
+    } else {
+      setError(false);
+    }
+  };
 
-
+  const handleConfirmPassword = (e) => {
+    setConfirmPassword(e.target.value);
+    if (password.length > 0) {
+      setError(e.target.value !== password);
+    } else {
+      setError(false);
+    }
+  };
   
 
 const handleRegister = async () => {
+  if (userPassword !== confirmPassword) {
+    setError(true);
+    toast.error('Passwords do not match');
+    return; // Stop the registration process if passwords don't match
+  }
+
+  setLoading(true);
   try {
     // Perform an API request to authenticate the user
 
@@ -119,7 +142,7 @@ const handleRegister = async () => {
   } catch (error) {
     console.error('Error occurred during authentication:', error);
     toast.error('Something went wrong! ');
-  }
+  } 
 };
 
 
@@ -160,24 +183,45 @@ const handleRegister = async () => {
             <Typography variant="body2" sx={{ color: 'text.secondary' }}> OR </Typography>
           </Divider>
 
-          <Typography variant="body2" sx={{ color: 'text.secondary' }}> Fulfill the blank below to create an account </Typography>
           <>
       <Stack spacing={3}>
         <TextField name="firstname" onChange={ (e) => setUserFirstName(e.target.value)} label="Name" />
         <TextField name="lastname" onChange={ (e) => setUserLastName(e.target.value)} label="Surname" />
         <TextField name="email" onChange={ (e) => setUserEmail(e.target.value)} label="Email address" />
 
-        <TextField 
-          name="password"
-          onChange={ (e) => setUserPassword(e.target.value)}
-          label="Password"
-          type={showPassword ? 'text' : 'password'}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
-                  <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} /> </IconButton> 
-                  </InputAdornment> ), }} />
+        <TextField
+        name="password"
+        onChange={ (e) => setUserPassword(e.target.value)}
+        label="Password"
+        type={showPassword ? 'text' : 'password'}
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position="end">
+              <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
+                <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
+              </IconButton>
+            </InputAdornment>
+          ),
+        }}
+      />
+
+<TextField
+        name="confirmPassword"
+        onChange={handleConfirmPassword}
+        label="Confirm Password"
+        type={showConfirmPassword ? 'text' : 'password'}
+        error={error}
+        helperText={error ? "Passwords do not match" : ""}
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position="end">
+              <IconButton onClick={() => setShowConfirmPassword(!showConfirmPassword)} edge="end">
+                <Iconify icon={showConfirmPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
+              </IconButton>
+            </InputAdornment>
+          ),
+        }}
+      />
 
 
       </Stack>
