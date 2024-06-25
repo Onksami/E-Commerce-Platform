@@ -27,9 +27,9 @@ import TableNoData from '../table-no-data';
 import UserTableRow from '../user-table-row';
 import UserTableHead from '../user-table-head';
 import TableEmptyRows from '../table-empty-rows';
+import { emptyRows, getComparator } from '../utils';
 import UserTableToolbar from '../user-table-toolbar';
 import { AuthContext } from '../../../context/AuthContext';
-import { emptyRows, applyFilter, getComparator } from '../utils';
 
 
 // ----------------------------------------------------------------------
@@ -49,7 +49,18 @@ export default function UserPage() {
 
   const [orderBy, setOrderBy] = useState('name');
 
-  const [filterName, setFilterName] = useState('');
+  // const [filterName, setFilterName] = useState('');
+
+  const [filters, setFilters] = useState({
+    name: '',
+    company: '',
+    mail: '',
+    phone: '',
+    city: '',
+    country: '',
+    role: '',
+    status: ''
+  });
 
   const [rowsPerPage, setRowsPerPage] = useState(10);
   /*eslint-disable */
@@ -59,8 +70,25 @@ export default function UserPage() {
   const [users, setUsers] = useState([]);
   const [isAdmin, setIsAdmin] = useState(false);
 
+  const [searchTerm, setSearchTerm] = useState('');
+
 
   // ------------------------------------------------------
+
+
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
+    setPage(0); // Ensure setPage is defined somewhere in your component
+  };
+
+  const handleFilterChange = (event) => {
+    const { name, value } = event.target;
+    setPage(0);
+    setFilters(prevFilters => ({
+      ...prevFilters,
+      [name]: value
+    }));
+  };
 
   useEffect(() => {
 
@@ -138,18 +166,40 @@ const accessToken  = localStorage.getItem("accessToken")
     setRowsPerPage(parseInt(event.target.value, 10));
   };
 
-  const handleFilterByName = (event) => {
-    setPage(0);
-    setFilterName(event.target.value);
+  const applyFilter = ({ inputData, comparator, searchTerm }) => {
+    const lowercasedTerm = searchTerm.toLowerCase();
+  
+    return inputData.filter((user) => {
+      return (
+        !searchTerm ||
+        user.name.toLowerCase().includes(lowercasedTerm) ||
+        user.company.toLowerCase().includes(lowercasedTerm) ||
+        user.mail.toLowerCase().includes(lowercasedTerm) ||
+        user.phone.toLowerCase().includes(lowercasedTerm) ||
+        user.city.toLowerCase().includes(lowercasedTerm) ||
+        user.country.toLowerCase().includes(lowercasedTerm) ||
+        user.role.toLowerCase().includes(lowercasedTerm) ||
+        user.status.toLowerCase().includes(lowercasedTerm)
+      );
+    }).sort(comparator);
   };
+
+  // const handleFilterByName = (event) => {
+  //   setPage(0);
+  //   setFilterName(event.target.value);
+  // };
 
   const dataFiltered = applyFilter({
     inputData: users,
     comparator: getComparator(order, orderBy),
-    filterName,
+    searchTerm,
   });
 
-  const notFound = !dataFiltered.length && !!filterName;
+  
+
+
+
+  const notFound = !dataFiltered.length && !!searchTerm;
 
   if (loading) {
     return <OrbitProgress variant="track-disc" speedPlus="1" easing="linear" />;
@@ -166,10 +216,10 @@ const accessToken  = localStorage.getItem("accessToken")
       </Stack>
 
       <Card>
-        <UserTableToolbar
+      <UserTableToolbar
           numSelected={selected.length}
-          filterName={filterName}
-          onFilterName={handleFilterByName}
+          filters={filters}
+          onFilterChange={handleFilterChange}
         />
 
         <Scrollbar>

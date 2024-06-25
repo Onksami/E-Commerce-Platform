@@ -31,7 +31,7 @@ export default function Header({ onOpenNav }) {
 
   const lgUp = useResponsive('up', 'lg');
 
-    const navigate = useNavigate(); // useNavigate kancasını kullanarak navigate fonksiyonunu tanımlayın
+    const navigate = useNavigate(); 
 
   
   const authContext = useContext(AuthContext);

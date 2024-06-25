@@ -80,7 +80,6 @@ export default function LoginView() {
 const handleRegister = async () => {
   if (userPassword !== confirmPassword) {
     setError(true);
-    toast.error('Passwords do not match');
     return; // Stop the registration process if passwords don't match
   }
 
@@ -141,8 +140,18 @@ const handleRegister = async () => {
     }
   } catch (error) {
     console.error('Error occurred during authentication:', error);
-    toast.error('Something went wrong! ');
+
+    toast.error('Email error!  ');
+    
+  } finally {
+    // Ensure loading is set to false after the try-catch block
+
+    setTimeout(() => {
+      setLoading(false);
+   }, 2000);
+
   } 
+
 };
 
 
@@ -216,7 +225,6 @@ const handleRegister = async () => {
           endAdornment: (
             <InputAdornment position="end">
               <IconButton onClick={() => setShowConfirmPassword(!showConfirmPassword)} edge="end">
-                <Iconify icon={showConfirmPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
               </IconButton>
             </InputAdornment>
           ),

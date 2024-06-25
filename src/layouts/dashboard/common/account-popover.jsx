@@ -1,4 +1,5 @@
 import { useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
 import Avatar from '@mui/material/Avatar';
@@ -33,6 +34,9 @@ const MENU_OPTIONS = [
 // ----------------------------------------------------------------------
 
 export default function AccountPopover() {
+
+  const navigate = useNavigate(); 
+
   const [open, setOpen] = useState(null);
 
 
@@ -50,6 +54,7 @@ export default function AccountPopover() {
   const handleClose = (event) => {
     localStorage.removeItem("accessToken");
     authContext.setSession(null);
+    navigate('/products');
 
   };
 

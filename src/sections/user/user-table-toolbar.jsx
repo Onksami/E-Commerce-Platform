@@ -11,7 +11,7 @@ import Iconify from 'src/components/iconify';
 
 // ----------------------------------------------------------------------
 
-export default function UserTableToolbar({ numSelected, filterName, onFilterName }) {
+export default function UserTableToolbar({ numSelected, searchTerm, onSearchChange }) {
   return (
     <Toolbar
       sx={{
@@ -25,7 +25,7 @@ export default function UserTableToolbar({ numSelected, filterName, onFilterName
         }),
       }}
     >
-      {numSelected > 0 ? (
+      {/* {numSelected > 0 ? (
         <Typography component="div" variant="subtitle1">
           {numSelected} selected
         </Typography>
@@ -43,7 +43,28 @@ export default function UserTableToolbar({ numSelected, filterName, onFilterName
             </InputAdornment>
           }
         />
+      )} */}
+      {numSelected > 0 ? (
+        <Typography component="div" variant="subtitle1">
+          {numSelected} selected
+        </Typography>
+      ) : (
+        <OutlinedInput
+          value={searchTerm}
+          onChange={onSearchChange}
+          placeholder="Search..."
+          startAdornment={
+            <InputAdornment position="start">
+              <Iconify
+                icon="eva:search-fill"
+                sx={{ color: 'text.disabled', width: 20, height: 20 }}
+              />
+            </InputAdornment>
+          }
+        />
       )}
+
+
 
       {numSelected > 0 ? (
         <Tooltip title="Delete">
@@ -64,6 +85,6 @@ export default function UserTableToolbar({ numSelected, filterName, onFilterName
 
 UserTableToolbar.propTypes = {
   numSelected: PropTypes.number,
-  filterName: PropTypes.string,
-  onFilterName: PropTypes.func,
+  searchTerm: PropTypes.string,
+  onSearchChange: PropTypes.func,
 };
