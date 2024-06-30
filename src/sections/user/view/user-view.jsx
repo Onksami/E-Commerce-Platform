@@ -166,21 +166,16 @@ const accessToken  = localStorage.getItem("accessToken")
     setRowsPerPage(parseInt(event.target.value, 10));
   };
 
-  const applyFilter = ({ inputData, comparator, searchTerm }) => {
+  const applyFilter = ({ inputData, comparator, searchTerm, filters }) => {
     const lowercasedTerm = searchTerm.toLowerCase();
-  
+
     return inputData.filter((user) => {
-      return (
-        !searchTerm ||
-        user.name.toLowerCase().includes(lowercasedTerm) ||
-        user.company.toLowerCase().includes(lowercasedTerm) ||
-        user.mail.toLowerCase().includes(lowercasedTerm) ||
-        user.phone.toLowerCase().includes(lowercasedTerm) ||
-        user.city.toLowerCase().includes(lowercasedTerm) ||
-        user.country.toLowerCase().includes(lowercasedTerm) ||
-        user.role.toLowerCase().includes(lowercasedTerm) ||
-        user.status.toLowerCase().includes(lowercasedTerm)
-      );
+      const matchesSearchTerm = !searchTerm || user.name.toLowerCase().includes(lowercasedTerm);
+      const matchesFilters = Object.keys(filters).every(key => {
+        if (!filters[key]) return true;
+        return user[key].toLowerCase().includes(filters[key].toLowerCase());
+      });
+      return matchesSearchTerm && matchesFilters;
     }).sort(comparator);
   };
 
@@ -193,9 +188,8 @@ const accessToken  = localStorage.getItem("accessToken")
     inputData: users,
     comparator: getComparator(order, orderBy),
     searchTerm,
+    filters
   });
-
-  
 
 
 
