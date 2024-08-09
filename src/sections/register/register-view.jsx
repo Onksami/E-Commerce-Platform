@@ -68,12 +68,9 @@ export default function LoginView() {
   };
 
   const handleConfirmPassword = (e) => {
-    setConfirmPassword(e.target.value);
-    if (password.length > 0) {
-      setError(e.target.value !== password);
-    } else {
-      setError(false);
-    }
+    const value = e.target.value;
+    setConfirmPassword(value);
+    setError(userPassword !== value);
   };
   
 
@@ -193,12 +190,12 @@ const handleRegister = async () => {
           </Divider>
 
           <>
-      <Stack spacing={3}>
-        <TextField name="firstname" onChange={ (e) => setUserFirstName(e.target.value)} label="Name" />
-        <TextField name="lastname" onChange={ (e) => setUserLastName(e.target.value)} label="Surname" />
-        <TextField name="email" onChange={ (e) => setUserEmail(e.target.value)} label="Email address" />
+          <Stack spacing={3}>
+            <TextField name="firstname" onChange={ (e) => setUserFirstName(e.target.value)} label="Name" />
+      <TextField name="lastname" onChange={ (e) => setUserLastName(e.target.value)} label="Surname" />
+      <TextField name="email" onChange={ (e) => setUserEmail(e.target.value)} label="Email address" />
 
-        <TextField
+      <TextField
         name="password"
         onChange={ (e) => setUserPassword(e.target.value)}
         label="Password"
@@ -214,7 +211,7 @@ const handleRegister = async () => {
         }}
       />
 
-<TextField
+      <TextField
         name="confirmPassword"
         onChange={handleConfirmPassword}
         label="Confirm Password"
@@ -225,14 +222,13 @@ const handleRegister = async () => {
           endAdornment: (
             <InputAdornment position="end">
               <IconButton onClick={() => setShowConfirmPassword(!showConfirmPassword)} edge="end">
+                <Iconify icon={showConfirmPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
               </IconButton>
             </InputAdornment>
           ),
         }}
       />
-
-
-      </Stack>
+    </Stack>
 
 
 
