@@ -1,5 +1,5 @@
-import axios from 'axios';
-import { useState, useEffect, useContext } from 'react';
+
+import { useState, useContext } from 'react';
 
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
@@ -18,7 +18,10 @@ import TablePagination from '@mui/material/TablePagination';
 
 // eslint-disable-next-line import/no-extraneous-dependencies
 
+import { useQuery } from '@tanstack/react-query';
 import { OrbitProgress } from 'react-loading-indicators';
+
+import { fetchUsers } from 'src/service/user';
 
 import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
@@ -65,15 +68,33 @@ export default function UserPage() {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   /*eslint-disable */
   const [loading, setLoading] = useState(true); // State to track loading
-  const [error, setError] = useState(null);
 
   const [users, setUsers] = useState([]);
   const [isAdmin, setIsAdmin] = useState(false);
 
   const [searchTerm, setSearchTerm] = useState('');
+  
 
+
+
+
+
+  const { data, error, isLoading, isError } = useQuery({
+    queryKey : ["users"],
+    queryFn: fetchUsers,
+  });
+
+
+
+console.log("query" , {
+  data, isLoading
+});
 
   // ------------------------------------------------------
+
+
+
+
 
 
   const handleSearchChange = (event) => {
@@ -89,37 +110,6 @@ export default function UserPage() {
       [name]: value
     }));
   };
-
-  useEffect(() => {
-
-const accessToken  = localStorage.getItem("accessToken")
-
-    const fetchUsers = async () => {
-      try {
-        const response = await axios.get('https://shopping-app-be.onrender.com/admin/users', {
-          headers: {
-            Authorization: accessToken,
-          },
-        }); 
-        setUsers(response.data);
-      } catch (error) {
-        console.error('Error fetching users:', error);
-      } finally {
-        setLoading(false);
-      }
-      
-    };
-
-   
-    fetchUsers();
-
-
-  }, []); 
-
-
-
-
-
 
 
   const handleSort = (event, id) => {
@@ -185,7 +175,7 @@ const accessToken  = localStorage.getItem("accessToken")
   // };
 
   const dataFiltered = applyFilter({
-    inputData: users,
+    inputData: data || [],
     comparator: getComparator(order, orderBy),
     searchTerm,
     filters
@@ -195,7 +185,7 @@ const accessToken  = localStorage.getItem("accessToken")
 
   const notFound = !dataFiltered.length && !!searchTerm;
 
-  if (loading) {
+  if (isLoading) {
     return <OrbitProgress variant="track-disc" speedPlus="1" easing="linear" />;
   }
 
